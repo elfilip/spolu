@@ -20,10 +20,8 @@ class RideDetail extends React.Component {
     }
 
    componentDidUpdate(){
-        console.log("rideDetail componentDidUpdate");
         let queryParams = queryString.parse(this.props.location.search);
         if(queryParams.id != this.state.id) {
-            this.props.dispatch(clearRide(this.props.userId, queryParams.id));
             this.props.dispatch(loadRide(this.props.userId, queryParams.id));
             this.setState({id: queryParams.id})
         }
@@ -31,10 +29,8 @@ class RideDetail extends React.Component {
 
     componentWillMount() {
         let queryParams = queryString.parse(this.props.location.search);
-        this.props.dispatch(clearRide(this.props.userId, queryParams.id));
         this.props.dispatch(loadRide(this.props.userId, queryParams.id));
 
-        console.log("rideDetail willmount");
     }
 
     loadRide(rideId) {
@@ -175,7 +171,7 @@ class RideDetail extends React.Component {
                 Zpáteční jízdu: <input type="checkbox" name="isRideBack"
                                        value={ride.isRideBack}/><br/>
                 <br/>
-                Typ Cesty: {this.state.rideType}<br/><br/>
+                Typ Cesty: {ride.rideType}<br/><br/>
 
                 <h4>Spolucestující</h4>
                 {this.props.isMiddle ?

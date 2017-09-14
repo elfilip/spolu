@@ -57,12 +57,12 @@ class Address extends React.Component {
         } else {
             html =
                 <div>
-                    <b>Stát:</b> {this.state.country}<br/>
-                    <b>Město:</b> {this.state.city}<br/>
-                    <b>Ulice:</b> {this.state.street}<br/>
-                    <b>Číslo popisné:</b> {this.state.number}<br/>
-                    <b>Popis místa:</b> {this.state.placeDescription}<br/>
-                    <b>Čas: </b> {this.state.stopTime}<br/>
+                    <b>Stát:</b> {this.props.data.country}<br/>
+                    <b>Město:</b> {this.props.data.city}<br/>
+                    <b>Ulice:</b> {this.props.data.street}<br/>
+                    <b>Číslo popisné:</b> {this.props.data.number}<br/>
+                    <b>Popis místa:</b> {this.props.data.placeDescription}<br/>
+                    <b>Čas: </b> {this.props.data.stopTime}<br/>
                 </div>
         }
 

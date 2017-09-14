@@ -30,7 +30,6 @@ export function loadRide(userId, rideId) {
             .catch((error) => {
                 dispatch({type: 'SET_ERROR', error: "Can't get ride. " + error.status})
                 dispatch({type: 'CLEAR_RIDE'})
-
                 console.log(error)
             })
     }
