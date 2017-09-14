@@ -89,7 +89,9 @@ export function deleteRide(rideId) {
     }
 }
 
+export function clearRide() {
 
-
+return {type: 'CLEAR_RIDE'};
+}
 
 

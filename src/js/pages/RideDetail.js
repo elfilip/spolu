@@ -9,19 +9,31 @@ import Participant from "../components/Participant";
 import Address from "../components/Address";
 import RideType from "../utils/RideType";
 import Ride from "../components/Ride";
-import {deleteRide, addUserToRide, deleteUserFromRide, loadRide} from "../redux/RideAction";
+import {deleteRide, addUserToRide, deleteUserFromRide, loadRide, clearRide} from "../redux/RideAction";
 
 class RideDetail extends React.Component {
     constructor() {
         super();
         this.state = {
+            id: null,
+        }
+    }
 
+   componentDidUpdate(){
+        console.log("rideDetail componentDidUpdate");
+        let queryParams = queryString.parse(this.props.location.search);
+        if(queryParams.id != this.state.id) {
+            this.props.dispatch(clearRide(this.props.userId, queryParams.id));
+            this.props.dispatch(loadRide(this.props.userId, queryParams.id));
+            this.setState({id: queryParams.id})
         }
     }
 
     componentWillMount() {
         let queryParams = queryString.parse(this.props.location.search);
+        this.props.dispatch(clearRide(this.props.userId, queryParams.id));
         this.props.dispatch(loadRide(this.props.userId, queryParams.id));
+
         console.log("rideDetail willmount");
     }
 

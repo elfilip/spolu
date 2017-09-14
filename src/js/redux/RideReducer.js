@@ -15,12 +15,12 @@ export default function reducer(state = {
             return {...state, rides: action.rides};
         case 'RIDE_LOADED':
             return {
-                ...state,
-                ride: action.ride,
+                ride: {...action.ride},
                 ride_isMiddle: action.ride.rideSections.length == 2,
-                ride_type: updateState(action.userId, action.ride)
+                ride_type: updateState(action.userId, action.ride),
+                rides: state.rides,
             };
-        case 'RIDE_LOADED':
+        case 'CLEAR_RIDE':
             return {...state, ride: null};
 
     }
