@@ -1,0 +1,21 @@
+
+.redStripe {
+    height: 5px;
+    background-color: #c41515;
+    margin: 15px auto;
+}
+
+
+.margin100{
+	margin: 100px auto;
+}
+
+.floatRight{
+    margin-top: 15px;
+    float:right;
+}
+
+.activeLink {
+    color: white;
+    background-color: rgb(231, 80, 68);
+}

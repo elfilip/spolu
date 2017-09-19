@@ -1,8 +1,8 @@
 import React from "react";
 
 import {logout, redirect} from "../redux/SessionAction";
-import  {connect}  from "react-redux"
-import {withRouter } from 'react-router-dom'
+import {connect} from "react-redux"
+import {withRouter} from 'react-router-dom'
 
 
 class Logout extends React.Component {
@@ -18,20 +18,20 @@ class Logout extends React.Component {
         this.props.dispatch(redirect("login"))
     }
 
+    handleProfile() {
+        this.props.dispatch(redirect("profile"))
+    }
+
     render() {
         var output;
-        if(this.props.username ===null){
+        if (this.props.username == null) {
             output = <div>Not logged</div>;
-        }else{
-            output=<div>
-                Username: {this.props.username}<br/>
-                <button onClick={this.handleLogout.bind(this)}>Logout</button>
-            </div>
         }
         return (
-            <div>
-                {output}
-            </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#/profile"> <span class="glyphicon glyphicon-user"/> {this.props.username}</a></li>
+                    <li><a href="#" onClick={this.handleLogout.bind(this)}> <span class="glyphicon glyphicon-log-in"></span> Odhlásit</a></li>
+                </ul>
         );
     }
 }

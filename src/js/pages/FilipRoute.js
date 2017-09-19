@@ -20,10 +20,16 @@ export default class FilipRoute extends React.Component{
     render(){
         var props=this.props;
         console.log("FilipRoute " +props.authenticated)
-        if(!props.authenticated){
-            history.push("/login")
-        }
-        var html=props.authenticated ? <Route {...props}/> : <Redirect to="/login"/>
+        var html=<Route {...props} render={(props) => {
+            console.log("Router " +this.props.authenticated)
+            var isLogged=this.props.authenticated;
+            var Component=this.props.component2;
+            if(isLogged === true){
+                return <Component {...this.props}/>
+            }else{
+                return  <Redirect to="/login"/>
+            }
+        }}/>
         return (
             <div>
             {html}

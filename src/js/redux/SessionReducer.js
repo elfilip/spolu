@@ -1,6 +1,6 @@
 export default function reducer(state = {
     username: localStorage.getItem('username'),
-    authenticated: localStorage.getItem('authenticated'),
+    authenticated: (localStorage.getItem('authenticated') == 'true'),
     redirect: null,
     error: null,
     login_error: null,

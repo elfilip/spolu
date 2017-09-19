@@ -1,58 +1,80 @@
 import React from "react";
-import  {connect}  from "react-redux"
+import {connect} from "react-redux"
 import {register} from "../redux/UserAction";
 import Constants from "../utils/Constants";
-import {withRouter } from 'react-router-dom'
+import {NavLink, withRouter} from 'react-router-dom'
 import axios from 'axios'
+
 class Register extends React.Component {
     constructor() {
         super();
         this.state = {
-            firstName:"",
+            firstName: "",
             surName: "",
-            email:"",
+            email: "",
             password: "",
-            phone:""
+            phone: ""
         };
     }
 
 
     handleKeydown(event) {
-        let newState={};
-        newState[event.target.name]=event.target.value;
+        let newState = {};
+        newState[event.target.name] = event.target.value;
         this.setState(newState);
         console.log(this.state)
     }
 
-    submit(event){
+    submit(event) {
         console.log("registruji")
-        let user={
+        let user = {
             firstname: this.state.firstName,
             surname: this.state.surName,
             phone: this.state.phone,
-            email:this.state.email,
+            email: this.state.email,
             password: this.state.password,
         }
-       this.props.dispatch(register(user))
+        this.props.dispatch(register(user))
     }
-    goToLogin(){
-        axios.get(Constants.baseURL + "/users/activate/"+this.props.activationToken);
+
+    goToLogin() {
+        axios.get(Constants.baseURL + "/users/activate/" + this.props.activationToken);
         this.props.history.push("/login");
     }
 
     render() {
-        console.log("auth v reg je "+this.props.authenticated)
-        var activationURL = Constants.baseURL + "/users/activate/"+this.props.activationToken;
-        var html=<div>Registrováno. Klikni na tento odkaz pro aktivaci: <a onClick={this.goToLogin.bind(this)}>Odkaz</a></div>
-        if(this.props.registered === false){
-            html= <div>
-                <h1>Register Page</h1>
-                First name: <input type="text" name="firstName" value={this.state.firstName} onChange={this.handleKeydown.bind(this)}/><br/>
-                Surname: <input type="text" name="surName" value={this.state.surName} onChange={this.handleKeydown.bind(this)}/><br/>
-                Phone: <input type="text" name="phone" value={this.state.phone} onChange={this.handleKeydown.bind(this)}/><br/>
-                Email: <input type="text" name="email" value={this.state.email} onChange={this.handleKeydown.bind(this)}/><br/>
-                Password: <input type="password" name="password" value={this.state.password} onChange={this.handleKeydown.bind(this)}/><br/>
-                <input type="button" value="Registrovat" onClick={this.submit.bind(this)}/><br/>
+        console.log("auth v reg je " + this.props.authenticated)
+        var activationURL = Constants.baseURL + "/users/activate/" + this.props.activationToken;
+        var html = <div>Registrováno. Klikni na tento odkaz pro aktivaci: <a onClick={this.goToLogin.bind(this)}>Odkaz</a></div>
+        if (this.props.registered === false) {
+            html = <div class="container">
+                <div class="row margin100">
+                    <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+                        <h3>Aplikace Spolujízda</h3>
+                        <div class="redStripe">
+
+                        </div>
+                    </div>
+                    <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+                        <div class="well">
+                            <h1>Registrace</h1>
+                            <br/>
+                            <label for="firstName">Name:</label>
+                            <input type="text" id="firstName" class="form-control" name="firstName" value={this.state.firstName} onChange={this.handleKeydown.bind(this)}/>
+                            <label for="surName">Příjmení:</label>
+                            <input type="text" id="surName" class="form-control" name="surName" value={this.state.surName} onChange={this.handleKeydown.bind(this)}/>
+                            <label for="phone">Telefon:</label>
+                            <input type="text" class="form-control" id="phone" name="phone" value={this.state.phone} onChange={this.handleKeydown.bind(this)}/>
+                            <label for="email">Email:</label>
+                            <input type="text" class="form-control" id="email" name="email" value={this.state.email} onChange={this.handleKeydown.bind(this)}/>
+                            <label for="password">Heslo:</label>
+                            <input type="password" class="form-control" id="password" name="password" value={this.state.password} onChange={this.handleKeydown.bind(this)}/>
+                            <br/>
+                            <button type="button"  class="btn btn-default" onClick={this.submit.bind(this)}>Registrovat</button>
+                            <NavLink class="floatRight" to="/login">Zpět na přihlášení</NavLink><br/>
+                        </div>
+                    </div>
+                </div>
             </div>
         }
         return (

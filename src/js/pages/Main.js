@@ -10,7 +10,7 @@ class Main extends React.Component {
     }
 
     render() {
-        console.log(this.props.authenticated)
+        console.log('Main ' +this.props.authenticated)
       return (
           <div>Main Page</div>
       )

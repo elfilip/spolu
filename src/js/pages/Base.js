@@ -4,7 +4,7 @@ import Login from "./Login"
 import {Route, Redirect} from "react-router-dom";
 import Nav from "../components/layout/Nav"
 import {connect} from "react-redux"
-import Logout from "./Logout"
+import Logout from "../components/Logout"
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import {redirect, clear} from '../redux/SessionAction'
@@ -38,7 +38,6 @@ class Base extends React.Component {
         this.props.dispatch(clear());
     }
 
-
     render() {
         const actions = [
             <FlatButton
@@ -53,21 +52,20 @@ class Base extends React.Component {
         return (
             <div>
                 <div>
-                    {logout}
                     {menu}
-                    <FilipRoute path="/main" authenticated={this.props.authenticated} component={Main}></FilipRoute>
+                    <PrivateRoute path="/main" authenticated={this.props.authenticated} component={Main}></PrivateRoute>
                     <Route path="/login" component={Login}></Route>
                     <Route path="/register" component={Register}></Route>
-                    <FilipRoute path="/profile" authenticated={this.props.authenticated}
-                                  component={Profile}></FilipRoute>
-                    <FilipRoute path="/createRide" authenticated={this.props.authenticated}
-                                  component={CreateRide}></FilipRoute>
-                    <FilipRoute path="/myRides" authenticated={this.props.authenticated}
-                                  component={MyRides}></FilipRoute>
-                    <FilipRoute path="/rideDetail" authenticated={this.props.authenticated}
-                                  component={RideDetail}></FilipRoute>
-                    <FilipRoute path="/searchRide" authenticated={this.props.authenticated}
-                                  component={SearchRide}></FilipRoute>
+                    <PrivateRoute path="/profile" authenticated={this.props.authenticated}
+                                  component={Profile}></PrivateRoute>
+                    <PrivateRoute path="/createRide" authenticated={this.props.authenticated}
+                                  component={CreateRide}></PrivateRoute>
+                    <PrivateRoute path="/myRides" authenticated={this.props.authenticated}
+                                  component={MyRides}></PrivateRoute>
+                    <PrivateRoute path="/rideDetail" authenticated={this.props.authenticated}
+                                  component={RideDetail}></PrivateRoute>
+                    <PrivateRoute path="/searchRide" authenticated={this.props.authenticated}
+                                  component={SearchRide}></PrivateRoute>
 
                     <Dialog
                         title="Alert"
