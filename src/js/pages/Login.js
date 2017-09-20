@@ -64,7 +64,7 @@ class Login extends React.Component {
                                     </div>
                                     : ""
                                 }
-                                <div class="input-group">
+                                <div class="input-group" style={{textAlign: 'center'}}>
                                     <span class="input-group-addon">Email</span>
                                     <input type="text" class="form-control" placeholder="uzivatel@kb.cz" onChange={this.handleUserName.bind(this)}/><br/>
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>

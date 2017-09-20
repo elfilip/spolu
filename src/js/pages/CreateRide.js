@@ -93,6 +93,9 @@ class CreateRide extends React.Component {
     render() {
         return (
             <div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2 col-md-10 col-md-offset-1 col-lg-6 col-lg-offset-3">
                 <h1>Vytvoření Jízdy</h1>
                 Kapacita: <input type="text" value={this.state.capacity} onChange={this.handleKeydown.bind(this)} name="capacity"/>
                 <Address name="Začátek trasy" update={this.updateOrigin.bind(this)}/>
@@ -131,7 +134,8 @@ class CreateRide extends React.Component {
                 <br/>
                 Typ Cesty: <input type="text"  name="rideType" onChange={this.handleKeydown.bind(this)} value={this.state.rideType}/><br/><br/>
                 <button type="button" onClick={this.submit.bind(this)}>Vytvořit jízdu</button>
-            </div>)
+            </div>
+                    </div></div></div>)
     }
 }
 

@@ -25,9 +25,11 @@
 }
 .navbar-default .navbar-brand {
     color: #ecf0f1;
+    font-style: oblique;
     background-color: rgb(178, 30, 42);
 }
 .navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+    font-style: oblique;
     color: #ffbbbc;
 }
 .navbar-default .navbar-nav > li > a {
@@ -75,4 +77,14 @@
         color: #ffbbbc;
         background-color: #c0392b;
     }
+}
+
+
+.well{
+    box-shadow: 2px 2px 2px #888888;
+    background-color: white;
+    border-radius: 0px;
+    padding: 15px;
+    margin: 10px;
+    position: relative;
 }

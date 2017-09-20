@@ -1,6 +1,5 @@
 import React from "react";
 import {connect} from "react-redux"
-import {getProfile} from "../redux/UserAction";
 import axios from 'axios'
 import Constants from '../utils/Constants'
 import {setOKMessage} from "../redux/SessionAction";
@@ -83,7 +82,7 @@ class Profile extends React.Component {
 
     changePassword() {
         const config = {headers: {'Content-Type': 'application/json'}};
-        axios.put(Constants.baseURL + '/user/' + this.props.userId+'/password?newPassword='+ this.state.password,null, config)
+        axios.put(Constants.baseURL + '/user/' + this.props.userId + '/password?newPassword=' + this.state.password, null, config)
             .then(function (response) {
                 this.props.dispatch(setOKMessage("Heslo změněno."))
             }.bind(this))
@@ -96,31 +95,43 @@ class Profile extends React.Component {
     render() {
         return (
             <div>
-                <h1>Váš Profil</h1>
-                {this.state.get_profile_status}
-                Jméno: <input type="text" name="firstName" value={this.state.profile.firstname}
-                              onChange={this.handleKeydown.bind(this)}/><br/>
-                Příjmení: <input type="text" name="surName" value={this.state.profile.surname}
-                                 onChange={this.handleKeydown.bind(this)}/><br/>
-                Telefon: <input type="text" name="phone" value={this.state.profile.phone}
-                                onChange={this.handleKeydown.bind(this)}/><br/>
-                Oddělní: <input type="text" name="department" value={this.state.profile.department}
-                                onChange={this.handleKeydown.bind(this)}/><br/>
-                Pracovní Místo: <input type="text" name="placeOfWork" value={this.state.profile.placeOfWork}
-                                       onChange={this.handleKeydown.bind(this)}/><br/>
-                Pozice: <input type="text" name="position" value={this.state.profile.position}
-                               onChange={this.handleKeydown.bind(this)}/><br/>
-                Poznámka: <input type="text" name="comment" value={this.state.profile.comment}
-                                 onChange={this.handleKeydown.bind(this)}/><br/>
-                Popis auta: <input type="text" name="carDescription" value={this.state.profile.carDescription}
-                                   onChange={this.handleKeydown.bind(this)}/><br/>
-                <input type="button" value="Změnit" onClick={this.submit.bind(this)}/><br/>
-                <br/>
-                <br/>
-                Změna Hesla:<br/>
-                Nové Heslo: <input type="password" name="password" value={this.state.password}
-                                   onChange={this.handlePassword.bind(this)}/><br/>
-                <input type="button" value="Změnit Heslo" onClick={this.changePassword.bind(this)}/><br/>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+                            <h1>Váš Profil</h1>
+                        </div>
+                        <div class="col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">
+                            <label for="firstName">Jméno:</label>
+                            <input type="text" id="firstName" class="form-control" name="firstName" value={this.state.profile.firstname} onChange={this.handleKeydown.bind(this)}/>
+                        </div>
+                        <div class="col-sm-4 col-md-3 col-lg-2">
+                            <label for="surName">Příjmení:</label>
+                            <input type="text" id="surName" class="form-control" name="surName" value={this.state.profile.surname} onChange={this.handleKeydown.bind(this)}/>
+                        </div>
+                        <br/>
+                        <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+                            <label for="phone">Telefon:</label>
+                            <input type="text" id="phone" class="form-control" name="phone" value={this.state.profile.phone} onChange={this.handleKeydown.bind(this)}/><br/>
+                            <label for="department">Oddělení:</label>
+                            <input type="text" id="department" class="form-control" name="department" value={this.state.profile.department} onChange={this.handleKeydown.bind(this)}/><br/>
+                            <label for="placeOfWork">Místo práce:</label>
+                            <input type="text" id="placeOfWork" class="form-control" name="placeOfWork" value={this.state.profile.placeOfWork} onChange={this.handleKeydown.bind(this)}/><br/>
+                            <label for="position">Pozice:</label>
+                            <input type="text" id="position" class="form-control" name="position" value={this.state.profile.position} onChange={this.handleKeydown.bind(this)}/><br/>
+                            <label for="comment">Poznámka:</label>
+                            <input type="text" id="comment" class="form-control"  name="comment" value={this.state.profile.comment} onChange={this.handleKeydown.bind(this)}/><br/>
+                            <label for="carDescription">Popis auta:</label>
+                            <input type="text" id="carDescription" class="form-control" name="carDescription" value={this.state.profile.carDescription} onChange={this.handleKeydown.bind(this)}/><br/>
+                            <button type="button"  class="btn btn-default" onClick={this.submit.bind(this)}>Změnit</button><br/>
+                            <br/>
+                            <br/>
+                            <h4>Změna Hesla</h4>
+                            <label for="password">Nové Heslo:</label>
+                            <input type="password" id="password" class="form-control" name="password" value={this.state.password} onChange={this.handlePassword.bind(this)}/><br/>
+                            <button type="button"  class="btn btn-default" onClick={this.changePassword.bind(this)}>Změnit Heslo</button><br/>
+                        </div>
+                    </div>
+                </div>
             </div>)
     }
 }

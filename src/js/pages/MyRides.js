@@ -13,6 +13,7 @@ class MyRides extends React.Component {
         super();
         this.state = {
             rides: null,
+            driver: true,
         }
     }
 
@@ -22,6 +23,10 @@ class MyRides extends React.Component {
 
     loadRides() {
         this.props.dispatch(loadUserRides(this.props.userId));
+    }
+
+    buttonClick(value){
+        this.setState({driver: value});
     }
 
     render() {
@@ -42,13 +47,27 @@ class MyRides extends React.Component {
                 }
             }.bind(this))
         }
+        var button1class = this.state.driver ? "myRideButtonActive btnRide btn-primaryRide" : "btnRide btn-primaryRide";
+        var button2class=  this.state.driver ? "btnRide btn-primaryRide" : "myRideButtonActive btnRide btn-primaryRide";
+
+        var rideList= this.state.driver ? driver : sit;
+
         return (
-            <div>
-                <h1>Moje jízdy</h1>
-                <h2>Jízdy kde jsem řidič</h2>
-                {driver.length != 0 ? driver : 'Nemáte žádné jízdy, kde by jste byl(a) řidič.'}
-                <h2>Jízdy kde jsem spolujezec</h2>
-                {sit.length != 0 ? sit : 'Nemáte žádné jízdy, kde by jste byl(a) spolujezdec.'}
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-sm-8 col-sm-offset-2 col-md-10 col-md-offset-1 col-lg-6 col-lg-offset-3" style={{textAlign: 'center'}}>
+                        <h2>Jízdy kde jsem {this.state.driver ? "řidič" : "spolujezdec"}</h2>
+                        <div class="btn-group">
+                            <button type="button" onClick={this.buttonClick.bind(this,true)} class={button1class}>Jízdy kde jsem řidič</button>
+                            <button type="button" onClick={this.buttonClick.bind(this,false)} class={button2class}>Jízdy kde jsem spolujezec</button>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-8 col-sm-offset-2 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+                    {rideList.length != 0 ? rideList : <h3>Žádné jízdy k zobrazení.</h3>}
+                    </div>
+                </div>
             </div>)
     }
 }

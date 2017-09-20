@@ -9,6 +9,7 @@ import {setOKMessage} from "../redux/SessionAction";
 import RideType from "../utils/RideType";
 
 import {Link} from "react-router-dom"
+import * as RideUtil from "../utils/RideUtil";
 
 class Ride extends React.Component {
     constructor() {
@@ -73,19 +74,16 @@ class Ride extends React.Component {
         }
         const detailURL = "/rideDetail?id=" + ride.id;
         return (
-            <div>
-                <h4>Jízda {ride.id}</h4>
-                <b>Z</b> {secFrom.origin.city},{secFrom.origin.street}
-                {isMiddle ? <span> <b> Pres </b> {secFrom.destination.city}, {secFrom.destination.street}</span> : ""}
-                <b> Do</b> {secTo.destination.city},{secTo.destination.street} <br/>
-                <b> Datum:</b> {secTo.origin.stopTime}<br/>
-                <b> Kapacita </b> {ride.freeCapacity}/{ride.capacity}<br/>
-                <Link to={detailURL}>Detail</Link><br/>
-                {this.props.type == RideType.DRIVER ? <button onClick={this.deleteRide.bind(this,ride.id)}>Smazat</button> : "" }
-                {this.props.type == RideType.HOST ? <button onClick={this.applyRide.bind(this,ride.id)}>Přihlásit</button> : "" }
-                {this.props.type == RideType.SIT ? <button onClick={this.signoffRide.bind(this,ride.id)}>Odhlásit</button> : "" }
-                <br/><br/>
 
+            <div class="well wellBox">
+                <div class="redStripeRide">
+                </div>
+                <span class="address">{secFrom.origin.city},{secFrom.origin.street} </span><span class="glyphicon glyphicon-arrow-right addressArrow"/>
+                {isMiddle ? <span><span class="address"> {secFrom.destination.city}, {secFrom.destination.street} </span><span class="glyphicon glyphicon-arrow-right addressArrow"/></span> : ""}
+                <span class="address"> {secTo.destination.city},{secTo.destination.street}</span> <br/>
+                <span class="rideDate">{RideUtil.formatDate(secTo.origin.stopTime)}</span><br/>
+                <b> Kapacita </b> {ride.freeCapacity}/{ride.capacity}<br/>
+                <Link to={detailURL}>Zobrazit Detail</Link><br/>
             </div>)
     }
 }

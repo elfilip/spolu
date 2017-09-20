@@ -19,3 +19,70 @@
     color: white;
     background-color: rgb(231, 80, 68);
 }
+
+.address {
+    font-size: 180%;
+    font-weight: bold;
+}
+
+.addressLabel {
+    font-size: 150%;
+}
+
+.addressArrow{
+    margin-bottom: 10px;
+}
+
+.rideDate{
+    font-size: 120%;
+}
+
+.wellBox{
+    box-shadow: 5px 5px 5px #888888;
+}
+
+.redStripeRide{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    min-height:100%;
+    background-color: #c41515;
+   width:5px;
+}
+
+.myRidesBorder{
+    border:1px solid #b5b5b5;
+    background-color: #fbfbfb;
+
+}
+
+.btnRide {
+    padding: 14px 24px;
+    border: 0 none;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.btnRide:focus, .btnRide:active:focus, .btnRide.active:focus {
+    outline: 0 none;
+}
+
+.btn-primaryRide {
+    background: #c41515;
+    color: #ffffff;
+}
+
+.btn-primaryRide:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+    background: #E75044;
+}
+
+.btn-primaryRide:active, .btn-primary.active {
+    background: #E75044;
+    box-shadow: none;
+}
+
+.myRideButtonActive{
+    background-color: #E75044;
+    border-color: #7e2817;
+}
