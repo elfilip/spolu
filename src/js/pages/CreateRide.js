@@ -6,24 +6,25 @@ import Constants from '../utils/Constants'
 import {setOKMessage} from "../redux/SessionAction";
 import Address from '../components/Address'
 import {loadUserRides} from "../redux/RideAction";
+import DateTimePicker from "../components/DateTimePicker";
 
 class CreateRide extends React.Component {
     constructor() {
         super();
         this.state = {
-                capacity: 0,
-                isMiddle: false,
-                origin: {},
-                middleStop: {},
-                destination: {},
-                price1: 0,
-                price2: 0,
-                regularity: 0,
-                isRideBack: false,
-                originStopTime: "",
-                middleStopTime: "",
-                destinationTime: "",
-                rideType: "",
+            capacity: 0,
+            isMiddle: false,
+            origin: {},
+            middleStop: {},
+            destination: {},
+            price1: 0,
+            price2: 0,
+            regularity: 0,
+            isRideBack: false,
+            originStopTime: "",
+            middleStopTime: "",
+            destinationTime: "",
+            rideType: "",
         }
     }
 
@@ -53,6 +54,10 @@ class CreateRide extends React.Component {
         this.setState({destination: address})
     }
 
+    toggleIsMiddle() {
+        this.setState({isMiddle: !this.state.isMiddle})
+    }
+
     submit() {
         let ride = {};
         ride['capacity'] = this.state.capacity;
@@ -63,19 +68,19 @@ class CreateRide extends React.Component {
         ride['price1'] = this.state.price1;
         if (this.state.isMiddle)
             ride['price2'] = this.state.price2;
-        ride['regularity']=this.state.regularity;
-        ride['rideType']=this.state.rideType;
-        ride['detour']=false;
-        if(this.state.isRideBack) {
+        ride['regularity'] = this.state.regularity;
+        ride['rideType'] = this.state.rideType;
+        ride['detour'] = false;
+        if (this.state.isRideBack) {
             let rideBack = {
                 destinationTime: this.state.destinationTime,
                 middleStopTime: this.state.middleStopTime,
                 originStopTime: this.state.originStopTime
             }
-            ride['rideBack']=rideBack;
+            ride['rideBack'] = rideBack;
         }
         const config = {headers: {'Content-Type': 'application/json'}};
-        axios.post(Constants.baseURL + '/rides', ride,config)
+        axios.post(Constants.baseURL + '/rides', ride, config)
             .then(function (response) {
                 this.props.dispatch(loadUserRides(this.props.userId));
                 this.props.dispatch(setOKMessage("Jízda vytvořena."))
@@ -86,8 +91,6 @@ class CreateRide extends React.Component {
             }.bind(this))
 
 
-
-
     }
 
     render() {
@@ -95,47 +98,70 @@ class CreateRide extends React.Component {
             <div>
                 <div class="container">
                     <div class="row">
-                        <div class="col-sm-8 col-sm-offset-2 col-md-10 col-md-offset-1 col-lg-6 col-lg-offset-3">
-                <h1>Vytvoření Jízdy</h1>
-                Kapacita: <input type="text" value={this.state.capacity} onChange={this.handleKeydown.bind(this)} name="capacity"/>
-                <Address name="Začátek trasy" update={this.updateOrigin.bind(this)}/>
-                Vytvořit mezizastávku: <input type="checkbox" onChange={this.handleKeydown.bind(this)}
-                                              value={this.state.isMiddle} name="isMiddle"/>
-                {this.state.isMiddle ? <Address name="Mezizastávka trasy" update={this.updateMiddle.bind(this)}/> : ""}
-                <Address name="Konec trasy" update={this.updateDest.bind(this)}/>
-                <br/>
-                <br/>
-                Cena za první úsek: <input type="text" name="price1" onChange={this.handleKeydown.bind(this)}
-                                           value={this.state.price1}/>
-                {this.state.isMiddle ? (<span>
+
+                        <div class="col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-2 col-lg-4 col-lg-offset-2">
+                            <Address name="Začátek trasy" placeHolder="Odkud..." update={this.updateOrigin.bind(this)}/>
+                            <DateTimePicker/>
+                        </div>
+                        <div class="col-sm-5 col-md-4 col-lg-4">
+                            <Address name="Konec trasy" placeHolder="Kam..." update={this.updateDest.bind(this)}/>
+                            <DateTimePicker/>
+                        </div>
+                        <div class="col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-2 col-lg-4 col-lg-offset-2">
+                            <br/>
+                            <button type="button" data-toggle="collapse" data-target="#sideStop" class="btn btn-default" onClick={this.toggleIsMiddle.bind(this)}>
+                                {!this.state.isMiddle ? "Vložit mezizastávku" : "Zrušit mezizastávku"}</button>
+                            <div id="sideStop" class="collapse">
+                                <Address name="Mezizastávka trasy" placeHolder="Mezizastávka..." update={this.updateMiddle.bind(this)}/>
+                                <DateTimePicker/>
+                            </div>
+                        </div>
+                        <br/>
+                        <br/>
+                        <div class="col-sm-11 col-sm-offset-1 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
+                            <div class="well">
+                                <h4>Počet volných míst</h4>
+                                <input type="text" class="capacity form-control" value={this.state.capacity} onChange={this.handleKeydown.bind(this)} name="capacity"/>
+                            </div>
+                            <div class="well">
+                                <h4>Cena za první úsek</h4>
+                                <input type="text" class="capacity form-control" name="price1" onChange={this.handleKeydown.bind(this)} value={this.state.price1}/>
+                            </div>
+                        </div>
+                            <br/>
+                            Cena za první úsek: <input type="text" name="price1" onChange={this.handleKeydown.bind(this)}
+                                                       value={this.state.price1}/>
+                            {this.state.isMiddle ? (<span>
                     <span>Cena za druhý úsek</span>
                     <input type="text" name="price2" onChange={this.handleKeydown.bind(this)}
                            value={this.state.price2}/>
                     </span>) : ""}
-                <br/>
-                Pravidelná cesta: <input type="checkbox" name="regularity" onChange={this.handleKeydown.bind(this)}
-                                         value={this.state.regularity}/><br/>
-                Nastavit zpáteční jízdu: <input type="checkbox" name="isRideBack"
-                                                onChange={this.handleKeydown.bind(this)}
-                                                value={this.state.isRideBack}/><br/>
-                {this.state.isRideBack ? (
-                    <span>
+                            <br/>
+                            Kapacita: <input type="text" value={this.state.capacity} onChange={this.handleKeydown.bind(this)} name="capacity"/>
+                            Pravidelná cesta: <input type="checkbox" name="regularity" onChange={this.handleKeydown.bind(this)}
+                                                     value={this.state.regularity}/><br/>
+                            Nastavit zpáteční jízdu: <input type="checkbox" name="isRideBack"
+                                                            onChange={this.handleKeydown.bind(this)}
+                                                            value={this.state.isRideBack}/><br/>
+                            {this.state.isRideBack ? (
+                                <span>
                         Časy pro zpáteční jízdu: <br/>
                         Start: <input name="originStopTime" onChange={this.handleKeydown.bind(this)}
                                       value={this.state.originStopTime}/>
-                        {this.state.isMiddle ? (<span>
+                                    {this.state.isMiddle ? (<span>
                             Mezizastavka: <input name="middleStopTime" onChange={this.handleKeydown.bind(this)}
                                                  value={this.state.middleStopTime}/>
                         </span>) : ""}
-                        Konec: <input name="destinationTime" onChange={this.handleKeydown.bind(this)}
-                                      value={this.state.destinationTime}/>
+                                    Konec: <input name="destinationTime" onChange={this.handleKeydown.bind(this)}
+                                                  value={this.state.destinationTime}/>
                     </span>
-                ) : ""}
-                <br/>
-                Typ Cesty: <input type="text"  name="rideType" onChange={this.handleKeydown.bind(this)} value={this.state.rideType}/><br/><br/>
-                <button type="button" onClick={this.submit.bind(this)}>Vytvořit jízdu</button>
-            </div>
-                    </div></div></div>)
+                            ) : ""}
+                            <br/>
+                            Typ Cesty: <input type="text" name="rideType" onChange={this.handleKeydown.bind(this)} value={this.state.rideType}/><br/><br/>
+                            <button type="button" onClick={this.submit.bind(this)}>Vytvořit jízdu</button>
+                        </div>
+                    </div>
+            </div>)
     }
 }
 

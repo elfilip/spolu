@@ -86,3 +86,39 @@
     background-color: #E75044;
     border-color: #7e2817;
 }
+
+.divAddress{
+    border: 1px solid black;
+    width: 100%;
+    height: 50px;
+}
+
+.iconMargin{
+    margin: 15px 10px 15px 10px;
+}
+
+.inputAddress{
+    font-size: 18px;
+    border: 1px;
+    width: 80%;
+    height: 80%;
+}
+
+.inputAddress:active, .inputAddress:focus{
+    border:0px;
+    outline-width: 0;
+}
+
+.no-border {
+    border: 0;
+    box-shadow: none;
+}
+
+.inlineBlock{
+    display: inline-block;
+}
+
+.capacity {
+    width :50px;
+    text-align: center;
+}

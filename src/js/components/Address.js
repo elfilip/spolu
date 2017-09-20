@@ -1,20 +1,15 @@
 import React from "react";
 import {connect} from "react-redux"
-import {getProfile} from "../redux/UserAction";
-import axios from 'axios'
-import Constants from '../utils/Constants'
-import {setOKMessage} from "../redux/SessionAction";
+import moment from "moment"
+import DateTimePicker from "./DateTimePicker";
 
 class Address extends React.Component {
     constructor() {
         super();
         this.state = {
-            city: "",
-            country: "",
-            number: "",
-            placeDescription: "",
+            address: "",
             stopTime: "",
-            street: ""
+            moment: moment(),
         }
     }
 
@@ -33,27 +28,26 @@ class Address extends React.Component {
         this.props.update(output);
     }
 
+    handleChange(aaa) {
+        console.log(aaa)
+    }
+
+    handleSave(aaa) {
+        console.log(aaa)
+    }
+
 
     render() {
-
+        var asterixColor = this.state.address ? {color: 'green'} : {color: 'red'}
         let html = null;
         if (!this.props.data) {
             html =
                 <div>
-
-                    Stát: <input type="text" name="country" value={this.state.country}
-                                 onChange={this.handleKeydown.bind(this)}/><br/>
-                    Město: <input type="text" name="city" value={this.state.city}
-                                  onChange={this.handleKeydown.bind(this)}/><br/>
-                    Ulice: <input type="text" name="street" value={this.state.street}
-                                  onChange={this.handleKeydown.bind(this)}/><br/>
-                    Číslo popisné: <input type="text" name="number" value={this.state.number}
-                                          onChange={this.handleKeydown.bind(this)}/><br/>
-                    Popis místa: <input type="text" name="placeDescription" value={this.state.placeDescription}
-                                        onChange={this.handleKeydown.bind(this)}/><br/>
-                    Čas: <input type="text" name="stopTime" value={this.state.stopTime}
-                                onChange={this.handleKeydown.bind(this)}/><br/>
-                </div>;
+                    <div class="divAddress">
+                        <span class="iconMargin glyphicon glyphicon-asterisk" style={asterixColor}></span>
+                        <input class="no-border inputAddress" type="text" placeholder={this.props.placeHolder} name="address" value={this.state.country} onChange={this.handleKeydown.bind(this)}/>
+                    </div>
+                </div>
         } else {
             html =
                 <div>
