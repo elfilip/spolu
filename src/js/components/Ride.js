@@ -47,15 +47,15 @@ class Ride extends React.Component {
         }
     }
 
-    deleteRide(id){
+    deleteRide(id) {
 
     }
 
-    applyRide(id){
+    applyRide(id) {
 
     }
 
-    signoffRide(id){
+    signoffRide(id) {
 
     }
 
@@ -75,15 +75,22 @@ class Ride extends React.Component {
         const detailURL = "/rideDetail?id=" + ride.id;
         return (
 
-            <div class="well wellBox">
-                <div class="redStripeRide">
+            <div class="ride">
+                <div class="col-sm-3 col-md-3 col-lg-3">
+                    Tady bude obrazek
                 </div>
-                <span class="address">{secFrom.origin.city},{secFrom.origin.street} </span><span class="glyphicon glyphicon-arrow-right addressArrow"/>
-                {isMiddle ? <span><span class="address"> {secFrom.destination.city}, {secFrom.destination.street} </span><span class="glyphicon glyphicon-arrow-right addressArrow"/></span> : ""}
-                <span class="address"> {secTo.destination.city},{secTo.destination.street}</span> <br/>
-                <span class="rideDate">{RideUtil.formatDate(secTo.origin.stopTime)}</span><br/>
-                <b> Kapacita </b> {ride.freeCapacity}/{ride.capacity}<br/>
-                <Link to={detailURL}>Zobrazit Detail</Link><br/>
+                <div class="col-sm-9 col-md-9 col-lg-9">
+                    <div class="redStripeRide"/>
+                    <span class="address">{secFrom.origin.address} </span><span class="glyphicon glyphicon-arrow-right addressArrow"/>
+                    {isMiddle ? <span><span class="address"> {secFrom.destination.address} </span><span class="glyphicon glyphicon-arrow-right addressArrow"/></span> : ""}
+                    <span class="address"> {secTo.destination.address}</span> <br/>
+                    <span class="rideDate">{RideUtil.formatDate(secTo.origin.stopTime)}</span><br/>
+                    <b> Kapacita </b> {ride.freeCapacity}/{ride.capacity}<br/>
+                    <Link to={detailURL}>Zobrazit Detail</Link><br/>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="rideStripe"/>
+                </div>
             </div>)
     }
 }

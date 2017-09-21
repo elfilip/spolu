@@ -97,42 +97,54 @@ class Profile extends React.Component {
             <div>
                 <div class="container">
                     <div class="row">
-                        <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
-                            <h1>Váš Profil</h1>
-                        </div>
-                        <div class="col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">
-                            <label for="firstName">Jméno:</label>
-                            <input type="text" id="firstName" class="form-control" name="firstName" value={this.state.profile.firstname} onChange={this.handleKeydown.bind(this)}/>
-                        </div>
-                        <div class="col-sm-4 col-md-3 col-lg-2">
-                            <label for="surName">Příjmení:</label>
-                            <input type="text" id="surName" class="form-control" name="surName" value={this.state.profile.surname} onChange={this.handleKeydown.bind(this)}/>
-                        </div>
-                        <br/>
-                        <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
-                            <label for="phone">Telefon:</label>
-                            <input type="text" id="phone" class="form-control" name="phone" value={this.state.profile.phone} onChange={this.handleKeydown.bind(this)}/><br/>
-                            <label for="department">Oddělení:</label>
-                            <input type="text" id="department" class="form-control" name="department" value={this.state.profile.department} onChange={this.handleKeydown.bind(this)}/><br/>
-                            <label for="placeOfWork">Místo práce:</label>
-                            <input type="text" id="placeOfWork" class="form-control" name="placeOfWork" value={this.state.profile.placeOfWork} onChange={this.handleKeydown.bind(this)}/><br/>
-                            <label for="position">Pozice:</label>
-                            <input type="text" id="position" class="form-control" name="position" value={this.state.profile.position} onChange={this.handleKeydown.bind(this)}/><br/>
-                            <label for="comment">Poznámka:</label>
-                            <input type="text" id="comment" class="form-control"  name="comment" value={this.state.profile.comment} onChange={this.handleKeydown.bind(this)}/><br/>
-                            <label for="carDescription">Popis auta:</label>
-                            <input type="text" id="carDescription" class="form-control" name="carDescription" value={this.state.profile.carDescription} onChange={this.handleKeydown.bind(this)}/><br/>
-                            <button type="button"  class="btn btn-default" onClick={this.submit.bind(this)}>Změnit</button><br/>
+                        <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+
+                        <div class="panel-default">
+                            <div class="panel-heading"><h4>Profil</h4></div>
+                            <div class="panel-body">
+                                <div class="col-sm-6 col-sm-offset-0 col-md-6 col-md-offset-0 col-lg-6 col-lg-offset-0">
+                                    <label for="firstName">Jméno:</label>
+                                    <input type="text" id="firstName" class="form-control" name="firstName" value={this.state.profile.firstname} onChange={this.handleKeydown.bind(this)}/>
+                                </div>
+                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                    <label for="surName">Příjmení:</label>
+                                    <input type="text" id="surName" class="form-control" name="surName" value={this.state.profile.surname} onChange={this.handleKeydown.bind(this)}/>
+                                </div>
+                                <br/>
+                                <div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 col-lg-12 col-lg-offset-0">
+                                    <label for="phone">Telefon:</label>
+                                    <input type="text" id="phone" class="form-control" name="phone" value={this.state.profile.phone} onChange={this.handleKeydown.bind(this)}/><br/>
+                                    <label for="department">Oddělení:</label>
+                                    <input type="text" id="department" class="form-control" name="department" value={this.state.profile.department} onChange={this.handleKeydown.bind(this)}/><br/>
+                                    <label for="placeOfWork">Místo práce:</label>
+                                    <input type="text" id="placeOfWork" class="form-control" name="placeOfWork" value={this.state.profile.placeOfWork} onChange={this.handleKeydown.bind(this)}/><br/>
+                                    <label for="position">Pozice:</label>
+                                    <input type="text" id="position" class="form-control" name="position" value={this.state.profile.position} onChange={this.handleKeydown.bind(this)}/><br/>
+                                    <label for="comment">Poznámka:</label>
+                                    <input type="text" id="comment" class="form-control" name="comment" value={this.state.profile.comment} onChange={this.handleKeydown.bind(this)}/><br/>
+                                    <label for="carDescription">Popis auta:</label>
+                                    <input type="text" id="carDescription" class="form-control" name="carDescription" value={this.state.profile.carDescription} onChange={this.handleKeydown.bind(this)}/><br/>
+                                    <button type="button" class="btn btn-default" onClick={this.submit.bind(this)}>Změnit</button>
+                                    <br/>
+                                </div>
+                            </div></div>
                             <br/>
+                            <div class="panel-default">
+                                <div class="panel-heading"><h4>Změna hesla</h4></div>
+                                <div class="panel-body">
+                                    <h4>Změna Hesla</h4>
+                                    <label for="password">Nové Heslo:</label>
+                                    <input type="password" id="password" class="form-control" name="password" value={this.state.password} onChange={this.handlePassword.bind(this)}/><br/>
+                                    <button type="button" class="btn btn-default" onClick={this.changePassword.bind(this)}>Změnit Heslo</button>
+                                    <br/>
+                                </div>
+                            </div>
                             <br/>
-                            <h4>Změna Hesla</h4>
-                            <label for="password">Nové Heslo:</label>
-                            <input type="password" id="password" class="form-control" name="password" value={this.state.password} onChange={this.handlePassword.bind(this)}/><br/>
-                            <button type="button"  class="btn btn-default" onClick={this.changePassword.bind(this)}>Změnit Heslo</button><br/>
                         </div>
                     </div>
                 </div>
-            </div>)
+            </div>
+        )
     }
 }
 

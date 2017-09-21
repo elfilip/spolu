@@ -139,53 +139,21 @@ class RideDetail extends React.Component {
         }
         return (
             <div>
-                <h3>Detail Jízdy</h3>
-                {this.props.type == RideType.DRIVER ?
-                    <button onClick={this.removeRide.bind(this, ride.id)}>Smazat</button> : ""}
-                {this.props.type == RideType.HOST ?
-                    <div>
-                        {applyButton1}{applyButton2}{applyButton3}
-                    </div> : ""}
-                {this.props.type == RideType.SIT ?
-                    <button onClick={this.signoffRide.bind(this, ride.id)}>Odhlásit</button> : ""}
-                <br/>
-                Kapacita: {ride.capacity}<br/>
-                <Address name="Začátek trasy" data={origin}/>
-                {this.props.isMiddle ? <Address name="Mezizastávka trasy" data={middle}/> : ""}
-                <Address name="Konec trasy" data={destination}/>
-                <br/>
-                <br/>
-                {this.props.isMiddle ? (<span>
-                Cena za trasu {origin.city}, {origin.street}
-                        -> {middle.city}, {middle.street}: {ride.rideSections[0].price} Kč<br/>
-                        Cena za trasu {middle.city}, {middle.street}
-                        -> {destination.city}, {destination.street}: {ride.rideSections[1].price} Kč<br/>
-                          Celková cena: {ride.rideSections[0].price + ride.rideSections[1].price} Kč</span>)
-                    :
-                    <span>
-                    Celková cena: {ride.rideSections[0].price} Kč
-                </span>}
-                <br/>
-                Pravidelná cesta: <input type="checkbox" name="regularity"
-                                         value={ride.regularity}/><br/>
-                Zpáteční jízdu: <input type="checkbox" name="isRideBack"
-                                       value={ride.isRideBack}/><br/>
-                <br/>
-                Typ Cesty: {ride.rideType}<br/><br/>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
 
-                <h4>Spolucestující</h4>
-                {this.props.isMiddle ?
-                    <span>
-                        Pro trasu {origin.city}, {origin.street} -> {middle.city}, {middle.street}: <br/>
-                        {participants1}
-                        Pro trasu {middle.city}, {middle.street} -> {destination.city},{destination.street}: <br/>
-                        {participants2}
-                    </span>
-                    :
-                    <span>
-                        {participants1}
-                    </span>
-                }
+                            <div class="panel-default">
+                                <div class="panel-heading"><h4>Nástup a výstup</h4></div>
+                                <div class="panel-body">
+                                    <Address name="Začátek trasy" data={origin.address}/>
+                                    {this.props.isMiddle ? <Address name="Mezizastávka trasy" data={middle.address}/> : ""}
+                                    <Address name="Konec trasy" data={destination.address}/>>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>)
     }
 }

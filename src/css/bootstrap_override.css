@@ -79,6 +79,19 @@
     }
 }
 
+.panel-body{
+    background-color: white;
+    border: 2px solid #d12038;
+}
+
+
+
+.panel-default>.panel-heading {
+    color: white;
+    border: 2px solid #d12038;
+    background-color: #e75044;
+}
+
 
 .well{
   /*  box-shadow: 2px 2px 2px #888888;*/

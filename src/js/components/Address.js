@@ -14,9 +14,7 @@ class Address extends React.Component {
     }
 
     componentWillMount() {
-        if (this.props.data) {
-            this.setState(this.props.data);
-        }
+
     }
 
     handleKeydown(event) {
@@ -25,7 +23,7 @@ class Address extends React.Component {
         this.setState(newState);
         let output = {...this.state};
         output[event.target.name] = event.target.value;
-        this.props.update(output);
+        this.props.update(event.target.value);
     }
 
     handleChange(aaa) {
@@ -43,6 +41,7 @@ class Address extends React.Component {
         if (!this.props.data) {
             html =
                 <div>
+                    <h4>{this.props.name}</h4>
                     <div class="divAddress">
                         <span class="iconMargin glyphicon glyphicon-asterisk" style={asterixColor}></span>
                         <input class="no-border inputAddress" type="text" placeholder={this.props.placeHolder} name="address" value={this.state.country} onChange={this.handleKeydown.bind(this)}/>
@@ -51,18 +50,13 @@ class Address extends React.Component {
         } else {
             html =
                 <div>
-                    <b>Stát:</b> {this.props.data.country}<br/>
-                    <b>Město:</b> {this.props.data.city}<br/>
-                    <b>Ulice:</b> {this.props.data.street}<br/>
-                    <b>Číslo popisné:</b> {this.props.data.number}<br/>
-                    <b>Popis místa:</b> {this.props.data.placeDescription}<br/>
-                    <b>Čas: </b> {this.props.data.stopTime}<br/>
+                    <span style={{fontSize: '15px'}}>{this.props.data}</span>
                 </div>
+
         }
 
         return (
             <div>
-                <h3>{this.props.name}</h3>
                 {html}
             </div>
         )

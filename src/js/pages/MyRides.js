@@ -57,15 +57,21 @@ class MyRides extends React.Component {
 
                 <div class="row">
                     <div class="col-sm-8 col-sm-offset-2 col-md-10 col-md-offset-1 col-lg-6 col-lg-offset-3" style={{textAlign: 'center'}}>
-                        <h2>Jízdy kde jsem {this.state.driver ? "řidič" : "spolujezdec"}</h2>
                         <div class="btn-group">
                             <button type="button" onClick={this.buttonClick.bind(this,true)} class={button1class}>Jízdy kde jsem řidič</button>
                             <button type="button" onClick={this.buttonClick.bind(this,false)} class={button2class}>Jízdy kde jsem spolujezec</button>
                         </div>
                     </div>
-
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
                     <div class="col-sm-8 col-sm-offset-2 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+                    <div class="panel-default">
+                        <div class="panel-heading"><h4>{this.state.driver ? "Jízdy, kde jsem řidič" : "Jízdy, kde jsem spolujezdec"}</h4></div>
+                        <div class="panel-body">
                     {rideList.length != 0 ? rideList : <h3>Žádné jízdy k zobrazení.</h3>}
+                    </div></div>
                     </div>
                 </div>
             </div>)

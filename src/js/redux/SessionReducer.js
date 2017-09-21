@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export default function reducer(state = {
     username: localStorage.getItem('username'),
     authenticated: (localStorage.getItem('authenticated') == 'true'),
@@ -9,7 +11,7 @@ export default function reducer(state = {
 }, action) {
     switch (action.type) {
         case 'LOGIN' :
-            return {...state, username: action.username, token: action.username + '123', userId: action.userId, authenticated: true, error: null, login_error: null,ahoj: true};
+            return {...state, username: action.username, token: action.username + '123', userId: action.userId, authenticated: true, error: null, login_error: null, ahoj: true};
         case 'LOGOUT' :
             return {...state, username: null, token: null, authenticated: false, error: null, redirect: null, login_error: null}
         case 'REDIRECT':
@@ -17,7 +19,7 @@ export default function reducer(state = {
         case "SET_ERROR" :
             return {...state, error: action.error}
         case 'STATE_CLEAN':
-            return {...state, redirect: null, error: null, ok_message:null}
+            return {...state, redirect: null, error: null, ok_message: null}
         case 'SET_LOGIN_ERROR':
             return {...state, redirect: null, login_error: action.error}
         case 'SET_OK_MESSAGE':
@@ -25,16 +27,17 @@ export default function reducer(state = {
     }
     return state;
 }
-/**
- * Created by elfilip on 14.8.17.
- */
 
-/*
-username: localStorage.getItem('username'),
-    token: "xx",
-    authenticated: localStorage.getItem('authenticated'),
-    redirect: null,
-    error: null,
-    login_error: null,
-    userId: localStorage.getItem('userId'),
-    ok_message: null,*/
+function isAuthenticated() {
+    axios.post(Constants.baseURL + '/users/login',
+        {
+            email: username,
+            password: password,
+        }, config)
+        .then(function (response) {
+           return
+        })
+        .catch(function (error) {
+            dispatch({type: 'SET_LOGIN_ERROR', error: "Nepovedlo se přihlásit. Kód: " + error.status})
+        })
+}

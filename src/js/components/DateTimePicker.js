@@ -22,12 +22,14 @@ class DateTimePicker extends React.Component {
 
 
     calendarChanged(date){
-        this.setState({moment:date})
+        this.setState({moment: date});
+        this.props.update(this.props.name, date.utc().format());
     }
+
 
     render() {
         return (
-            <div>
+            <div style={{float: 'right'}}>
                 <span class="iconMargin glyphicon glyphicon-time"></span>
                 <Datetime class="inlineBlock" inputProps={{ placeholder: 'blah'}} value={this.state.moment} onChange={this.calendarChanged.bind(this)}/>
             </div>
