@@ -7,14 +7,15 @@ import {setOKMessage} from "../redux/SessionAction";
 import {loadUserRides} from "../redux/RideAction";
 import Ride from "../components/Ride";
 import RideType from "../utils/RideType";
+import DateTimePicker from "../components/DateTimePicker";
 
 class SearchRide extends React.Component {
     constructor() {
         super();
         this.state = {
             criteria: {
-                fromCity: "",
-                toCity: "",
+                fromAddress: "",
+                toAddress: "",
                 fromAfter: "",
                 toAfter: "",
                 fromBefore: "",
@@ -23,8 +24,8 @@ class SearchRide extends React.Component {
                 minPrice: "",
                 maxPrice: "",
                 rideType: "NULL",
-                detour: "",
-                regularity: "",
+                detour: "NULL",
+                regularity: "NULL",
             },
             error: null,
             loading: null,
@@ -92,6 +93,13 @@ class SearchRide extends React.Component {
         this.setState({show_extended_filter: !this.state.show_extended_filter});
     }
 
+    updateTime(name, value) {
+        var newState = {...this.state.criteria};
+        newState[name] = value;
+        this.setState({criteria: newState});
+    }
+
+
     render() {
         let rides = null;
         if (this.state.rides) {
@@ -101,49 +109,113 @@ class SearchRide extends React.Component {
         }
         return (
             <div>
-                <h1>Hledání Jízdy</h1>
-                {this.state.error}<br/>
-                Odkud: <input type="text" name="fromCity" value={this.state.criteria.fromCity}
-                              onChange={this.handleKeydown.bind(this)}/>
-                Kam: <input type="text" name="toCity" value={this.state.criteria.toCity}
-                            onChange={this.handleKeydown.bind(this)}/><br/>
-                Kdy chci jet nejdříve: <input type="text" name="fromAfter" value={this.state.criteria.fromAfter}
-                                              onChange={this.handleKeydown.bind(this)}/><br/>
-                Kdy chci jet nejpozději: <input type="text" name="fromBefore" value={this.state.criteria.fromBefore}
-                                                onChange={this.handleKeydown.bind(this)}/><br/>
-                {!this.state.show_extended_filter ?
-                    <span><a onClick={this.showExtended.bind(this)}>Zobrazit rošířené vyhledávání</a><br/></span>
-                    :
-                    <div>
-                        <a onClick={this.showExtended.bind(this)}>Skrýt rozšířené vyhledávání</a><br/>
-                        Kdy chci dorazit nejdříve: <input type="text" name="toAfter" value={this.state.criteria.toAfter}
-                                                          onChange={this.handleKeydown.bind(this)}/><br/>
-                        Kdy chci dorazit nejpozději: <input type="text" name="toBefore"
-                                                            value={this.state.criteria.toBefore}
-                                                            onChange={this.handleKeydown.bind(this)}/><br/>
-                        Minimální volná kapacita: <input type="text" name="minFreeCapacity"
-                                                         value={this.state.criteria.minFreeCapacity}
-                                                         onChange={this.handleKeydown.bind(this)}/><br/>
-                        Cena Min: <input type="text" name="minPrice" value={this.state.criteria.minPrice}
-                                         onChange={this.handleKeydown.bind(this)}/>
-                        Cena Max: <input type="text" name="maxPrice" value={this.state.criteria.maxPrice}
-                                         onChange={this.handleKeydown.bind(this)}/><br/>
-                        Typ Jízdy:
-                        <select name="rideType" value={this.state.criteria.rideType}
-                                onChange={this.handleKeydown.bind(this)}>
-                            <option value="PERSONAL">Osobní</option>
-                            <option value="BUSSINESS">Pracovní</option>
-                            <option value="NULL">Nezadáno</option>
-                        </select><br/>
-                        Zajížďka: <input type="checkbox" name="detour" value={this.state.criteria.detour}
-                                         onChange={this.handleKeydown.bind(this)}/><br/>
-                        Pravidelná jízda: <input type="checkbox" name="regularity"
-                                                 value={this.state.criteria.regularity}
-                                                 onChange={this.handleKeydown.bind(this)}/><br/>
-                    </div>}
-                <button onClick={this.submit.bind(this)}>Vyhledat</button>
+
+                <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+
+                    <div class="panel-default">
+                        <div class="panel-heading"><h4>Vyhledat jízdu</h4></div>
+                        <div class="panel-body">
+                            <div class="col-sm-6 col-sm-offset-0 col-md-6 col-md-offset-0 col-lg-6 col-lg-offset-0">
+                                <label for="fromAddress">Odkud:</label>
+                                <input type="text" id="fromAddress" class="form-control" name="fromAddress" value={this.state.criteria.fromAddress} onChange={this.handleKeydown.bind(this)}/>
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-6">
+                                <label for="toAddress">Kam:</label>
+                                <input type="text" name="toAddress" class="form-control" value={this.state.criteria.toAddress} onChange={this.handleKeydown.bind(this)}/>
+                            </div>
+                            <br/>
+                            <div class="col-sm-6 col-md-6 col-lg-6">
+                                <label for="toAddress">Kdy chci vyrazit nejdříve:</label>
+                                <DateTimePicker id="fromAfter" iconRight="true" update={this.updateTime.bind(this)}/>
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-6">
+                                <label for="toAddress">Kdy chci vyrazit nejpozději:</label>
+                                <DateTimePicker id="fromAfter" iconRight="true" update={this.updateTime.bind(this)}/>
+                            </div>
+
+                            {!this.state.show_extended_filter ?
+                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                    <br/>
+                                    <a onClick={this.showExtended.bind(this)}>Zobrazit rošířené vyhledávání</a><br/>
+                                </div>
+                                :
+
+                                <div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12">
+                                        <br/>
+                                        <a onClick={this.showExtended.bind(this)}>Skrýt rozšířené vyhledávání</a><br/>
+                                        <br/>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        <label for="toAfter">Kdy chci dorazit nejdříve:</label>
+                                        <DateTimePicker id="toAfter" iconRight="true" update={this.updateTime.bind(this)}/>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        <label for="toBefore">Kdy chci dorazit nejpozději:</label>
+                                        <DateTimePicker id="toBefore" iconRight="true" update={this.updateTime.bind(this)}/>
+                                    </div>
+                                    <div>
+                                        <div class="col-sm-6 col-md-6 col-lg-6">
+                                            <label for="minFreeCapacity">Minimální volná kapacita:</label>
+                                            <input type="text" class=" capacity form-control" name="minFreeCapacity" value={this.state.criteria.minFreeCapacity} onChange={this.handleKeydown.bind(this)}/>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 col-lg-6">
+                                            <label for="toBefore">Typ Jízdy:</label>
+                                            <select style={{width: "130px"}} class="form-control" name="rideType" value={this.state.criteria.rideType}
+                                                    onChange={this.handleKeydown.bind(this)}>
+                                                <option value="PERSONAL">Osobní</option>
+                                                <option value="BUSSINESS">Pracovní</option>
+                                                <option value="NULL">Nezadáno</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 col-lg-6">
+                                            <label for="minPrice">Minimální cena: </label>
+                                            <input type="text" class="capacity form-control" name="minPrice" value={this.state.criteria.minPrice} onChange={this.handleKeydown.bind(this)}/>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 col-lg-6">
+                                            <label for="maxPrice">Maximální cena: </label>
+                                            <input type="text" class=" capacity form-control" name="maxPrice" value={this.state.criteria.maxPrice} onChange={this.handleKeydown.bind(this)}/><br/>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 col-lg-6">
+                                            <label for="detour">Zajížďka:</label>
+                                            <select style={{width: "130px"}} class="form-control" name="detour" value={this.state.criteria.detour} onChange={this.handleKeydown.bind(this)}>
+                                                <option value="TRUE">Ano</option>
+                                                <option value="FALSE">Ne</option>
+                                                <option value="NULL">Nezadáno</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 col-lg-6">
+                                            <label for="regularity">Pravidelná jízda: </label>
+                                            <select style={{width: "130px"}} class="form-control" name="regularity" value={this.state.criteria.regularity} onChange={this.handleKeydown.bind(this)}>
+                                                <option value="TRUE">Ano</option>
+                                                <option value="FALSE">Ne</option>
+                                                <option value="NULL">Nezadáno</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                <br/>
+                                <button type="button" class="btn btn-default" onClick={this.submit.bind(this)}>Vyhledat</button>
+                                <br/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {rides ?
+                    <div class="col-sm-12 col-sm-offset-0 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+                        <div class="panel-default">
+                            <div class="panel-heading"><h4>Nalezené jízdy</h4></div>
+                            <div class="panel-body">
+                                {rides.length != 0 ? rides : <h4>Žádné jízdy k zobrazení</h4> }
+                                {rides}
+                            </div>
+                        </div>
+                    </div> : ""
+                }
                 {this.state.loading}
-                {rides}
+
             </div>)
     }
 }

@@ -9,6 +9,7 @@ export default function reducer(state = {
     ride: null,
     ride_type: null,
     ride_isMiddle: null,
+    rideBackId: null,
 }, action) {
     switch (action.type) {
         case 'RIDES_LOADED':
@@ -22,6 +23,8 @@ export default function reducer(state = {
             };
         case 'CLEAR_RIDE':
             return {...state, ride: null};
+        case 'RIDEBACK_LOADED':
+            return {...state, rideBackId: action.rideBackId};
 
     }
     return state;

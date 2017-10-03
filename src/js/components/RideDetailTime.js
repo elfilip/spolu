@@ -18,30 +18,26 @@ class DateTimePicker extends React.Component {
     componentWillMount() {
         var momentx = moment();
         momentx.locale('cs');
-       // this.setState({moment: momentx});
+        this.setState({moment: momentx});
     }
 
 
     calendarChanged(date) {
         this.setState({moment: date});
-        if (!date) {
-            this.props.update(this.props.name, "");
-
-        } else {
-            this.props.update(this.props.name, date.utc().format());
-        }
+        this.props.update(this.props.name, date.utc().format());
     }
 
 
     render() {
         return (
 
-            <div class={this.props.classCss}>
-                {!this.props.iconRight ? <span class="iconMargin glyphicon glyphicon-time"></span> : ""}
-                <Datetime locale="cs"  class="inlineBlock" inputProps={{placeholder: this.props.placeholder}} value={this.state.moment} onChange={this.calendarChanged.bind(this)}/>
-                {this.props.iconRight ? <span class="iconMargin glyphicon glyphicon-time"></span> : ""}
-
-            </div>
+            <span style={{float: 'right'}}>
+                <span class="iconMargin glyphicon glyphicon-time"></span>
+                        <div class={this.props.class}>
+                        <span class="iconMargin glyphicon glyphicon-time"></span>
+                            {RideUtil.formatDate(this.props.data)}
+                    </div>
+            </span>
 
 
         )

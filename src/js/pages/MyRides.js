@@ -66,7 +66,7 @@ class MyRides extends React.Component {
                     <br/>
                     <br/>
                     <br/>
-                    <div class="col-sm-8 col-sm-offset-2 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+                    <div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 col-lg-10 col-lg-offset-1">
                     <div class="panel-default">
                         <div class="panel-heading"><h4>{this.state.driver ? "Jízdy, kde jsem řidič" : "Jízdy, kde jsem spolujezdec"}</h4></div>
                         <div class="panel-body">

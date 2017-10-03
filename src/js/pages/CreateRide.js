@@ -145,17 +145,17 @@ class CreateRide extends React.Component {
                                 <div class="panel-body">
                                     <div>
                                         <h4 class="inline">Čas příjezdu</h4>
-                                        <DateTimePicker name="originStopTime" update={this.updateTime.bind(this)}/>
+                                        <DateTimePicker name="originStopTime" update={this.updateTime.bind(this)} classCss="floatRightCreateRide"/>
                                     </div>
                                     {this.state.isMiddle ?
                                         <div>
                                             <h4 class="inline">Čas příjezdu do mezizastávky</h4>
-                                            <DateTimePicker name="middleStopTime" update={this.updateTime.bind(this)}/>
+                                            <DateTimePicker name="middleStopTime" update={this.updateTime.bind(this)} classCss="floatRightCreateRide"/>
                                         </div>
                                         : ""}
                                     <div>
                                         <h4 class="inline">Čas odjezdu</h4>
-                                        <DateTimePicker name="destinationStopTime" update={this.updateTime.bind(this)}/>
+                                        <DateTimePicker name="destinationStopTime" update={this.updateTime.bind(this)} classCss="floatRightCreateRide"/>
                                     </div>
                                 </div>
                             </div>

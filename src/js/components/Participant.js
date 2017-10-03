@@ -17,8 +17,10 @@ class Participant extends React.Component {
 
     render() {
         let participant=this.props.participant;
+        var img= <span style={{backgroundColor: 'gray'}} class="glyphicon glyphicon-user profileDefault"></span>
+
         return (
-            <span>{participant.firstname}, {participant.surname}, {participant.email} {participant.role == RideType.DRIVER ? '- RIDIČ' : ''}<br/></span>
+            <div style={{textAlign: 'center',display: 'inline-block', padding: '5px'}}>{img}<br/> {participant.firstname}, {participant.surname}<br/></div>
         )
     }
 }

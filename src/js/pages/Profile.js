@@ -3,6 +3,8 @@ import {connect} from "react-redux"
 import axios from 'axios'
 import Constants from '../utils/Constants'
 import {setOKMessage} from "../redux/SessionAction";
+import ProfileImage from "../components/ProfileImage";
+import {resizeBase64Img} from "../utils/RideUtil";
 
 class Profile extends React.Component {
     constructor() {
@@ -18,7 +20,8 @@ class Profile extends React.Component {
                 position: "",
                 surname: "",
                 password: "",
-                get_profile_status: 'Not Loaded'
+                get_profile_status: 'Not Loaded',
+                avatar: null,
             }
         }
     }
@@ -42,6 +45,7 @@ class Profile extends React.Component {
                         placeOfWork: response.data.placeOfWork,
                         position: response.data.position,
                         surname: response.data.surname,
+                        avatar: response.data.avatarBase64,
                     },
                     password: response.data.password,
                     get_profile_status: 'Loaded'
@@ -92,6 +96,31 @@ class Profile extends React.Component {
             }.bind(this))
     }
 
+    uploadAvatar(avatar64) {
+        var fr = new FileReader();
+        fr.addEventListener("load", function (e) {
+            var resizedAvatar64 = resizeBase64Img(e.target.result, avatar64.files[0], Constants.avatarSize, Constants.avatarSize);
+            this.sendProfileToServer(resizedAvatar64);
+        }.bind(this));
+        fr.readAsDataURL(avatar64.files[0]);
+        console.log('uploa')
+    }
+
+    sendProfileToServer(avatar64) {
+        const config = {headers: {'Content-Type': 'text/plain;charset=UTF-8'}};
+        var avatar64noHeader= avatar64.split(",")[1];
+        axios.post(Constants.baseURL + '/user/' + this.props.userId + "/uploadAvatar", avatar64noHeader, config)
+            .then(function (response) {
+                var newProfile = this.state.profile;
+                newProfile.avatar = avatar64noHeader;
+                this.setState({profile: newProfile});
+            }.bind(this))
+            .catch(function (error) {
+                this.props.dispatch({type: 'SET_ERROR', error: "Obrázek se nepodařílo uložit. " + error.status})
+            }.bind(this))
+    }
+
+
     render() {
         return (
             <div>
@@ -99,35 +128,41 @@ class Profile extends React.Component {
                     <div class="row">
                         <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
 
-                        <div class="panel-default">
-                            <div class="panel-heading"><h4>Profil</h4></div>
-                            <div class="panel-body">
-                                <div class="col-sm-6 col-sm-offset-0 col-md-6 col-md-offset-0 col-lg-6 col-lg-offset-0">
-                                    <label for="firstName">Jméno:</label>
-                                    <input type="text" id="firstName" class="form-control" name="firstName" value={this.state.profile.firstname} onChange={this.handleKeydown.bind(this)}/>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-6">
-                                    <label for="surName">Příjmení:</label>
-                                    <input type="text" id="surName" class="form-control" name="surName" value={this.state.profile.surname} onChange={this.handleKeydown.bind(this)}/>
-                                </div>
-                                <br/>
-                                <div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 col-lg-12 col-lg-offset-0">
-                                    <label for="phone">Telefon:</label>
-                                    <input type="text" id="phone" class="form-control" name="phone" value={this.state.profile.phone} onChange={this.handleKeydown.bind(this)}/><br/>
-                                    <label for="department">Oddělení:</label>
-                                    <input type="text" id="department" class="form-control" name="department" value={this.state.profile.department} onChange={this.handleKeydown.bind(this)}/><br/>
-                                    <label for="placeOfWork">Místo práce:</label>
-                                    <input type="text" id="placeOfWork" class="form-control" name="placeOfWork" value={this.state.profile.placeOfWork} onChange={this.handleKeydown.bind(this)}/><br/>
-                                    <label for="position">Pozice:</label>
-                                    <input type="text" id="position" class="form-control" name="position" value={this.state.profile.position} onChange={this.handleKeydown.bind(this)}/><br/>
-                                    <label for="comment">Poznámka:</label>
-                                    <input type="text" id="comment" class="form-control" name="comment" value={this.state.profile.comment} onChange={this.handleKeydown.bind(this)}/><br/>
-                                    <label for="carDescription">Popis auta:</label>
-                                    <input type="text" id="carDescription" class="form-control" name="carDescription" value={this.state.profile.carDescription} onChange={this.handleKeydown.bind(this)}/><br/>
-                                    <button type="button" class="btn btn-default" onClick={this.submit.bind(this)}>Změnit</button>
+                            <div class="panel-default">
+                                <div class="panel-heading"><h4>Profil</h4></div>
+                                <div class="panel-body">
+                                    <div class="col-sm-6 col-sm-offset-0 col-md-6 col-md-offset-0 col-lg-6 col-lg-offset-0">
+                                        <label for="firstname">Jméno:</label>
+                                        <input type="text" id="firstName" class="form-control" name="firstname" value={this.state.profile.firstname} onChange={this.handleKeydown.bind(this)}/>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        <label for="surname">Příjmení:</label>
+                                        <input type="text" id="surName" class="form-control" name="surname" value={this.state.profile.surname} onChange={this.handleKeydown.bind(this)}/>
+                                    </div>
                                     <br/>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        <label for="phone">Telefon:</label>
+                                        <input type="text" id="phone" class="form-control" name="phone" value={this.state.profile.phone} onChange={this.handleKeydown.bind(this)}/><br/>
+                                        <label for="department">Oddělení:</label>
+                                        <input type="text" id="department" class="form-control" name="department" value={this.state.profile.department} onChange={this.handleKeydown.bind(this)}/><br/>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        <ProfileImage uploadAvatar={this.uploadAvatar.bind(this)} avatar={this.state.profile.avatar}/>
+                                    </div>
+                                    <div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 col-lg-12 col-lg-offset-0">
+                                        <label for="placeOfWork">Místo práce:</label>
+                                        <input type="text" id="placeOfWork" class="form-control" name="placeOfWork" value={this.state.profile.placeOfWork} onChange={this.handleKeydown.bind(this)}/><br/>
+                                        <label for="position">Pozice:</label>
+                                        <input type="text" id="position" class="form-control" name="position" value={this.state.profile.position} onChange={this.handleKeydown.bind(this)}/><br/>
+                                        <label for="comment">Poznámka:</label>
+                                        <input type="text" id="comment" class="form-control" name="comment" value={this.state.profile.comment} onChange={this.handleKeydown.bind(this)}/><br/>
+                                        <label for="carDescription">Popis auta:</label>
+                                        <input type="text" id="carDescription" class="form-control" name="carDescription" value={this.state.profile.carDescription} onChange={this.handleKeydown.bind(this)}/><br/>
+                                        <button type="button" class="btn btn-default" onClick={this.submit.bind(this)}>Změnit</button>
+                                        <br/>
+                                    </div>
                                 </div>
-                            </div></div>
+                            </div>
                             <br/>
                             <div class="panel-default">
                                 <div class="panel-heading"><h4>Změna hesla</h4></div>

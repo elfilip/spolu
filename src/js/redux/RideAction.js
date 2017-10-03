@@ -26,13 +26,30 @@ export function loadRide(userId, rideId) {
         axios.get(Constants.baseURL + '/ride/' + rideId)
             .then(function (response) {
                 dispatch({type: 'RIDE_LOADED', ride: response.data , userId: userId});
+                loadRideBack(dispatch,rideId);
             }.bind(this))
             .catch((error) => {
                 dispatch({type: 'SET_ERROR', error: "Can't get ride. " + error.status})
                 dispatch({type: 'CLEAR_RIDE'})
                 console.log(error)
             })
-    }
+          }
+}
+
+function loadRideBack(dispatch, rideId){
+    axios.get(Constants.baseURL + '/ride/' + rideId+"/group")
+        .then(function (response) {
+                dispatch({type: 'RIDEBACK_LOADED', rideBackId: response.data.rideBackId ? response.data.rideBackId : null});
+        }.bind(this))
+        .catch((error) => {
+        if(error.status == 400) {
+            dispatch({type: 'RIDEBACK_LOADED', rideBackId: null});
+        }else {
+            dispatch({type: 'SET_ERROR', error: "Can't get ride back. " + error.status})
+            dispatch({type: 'CLEAR_RIDE'})
+            console.log(error)
+        }
+        })
 }
 
 export function addUserToRide(rideId, userId, sectionNo, role) {

@@ -10,14 +10,17 @@ body {
     margin: 15px auto;
 }
 
-
-.margin100{
-	margin: 100px auto;
+.margin100 {
+    margin: 100px auto;
 }
 
-.floatRight{
+.floatRight {
     margin-top: 15px;
-    float:right;
+    float: right;
+}
+
+.floatRightCreateRide {
+    float: right;
 }
 
 .activeLink {
@@ -26,7 +29,7 @@ body {
 }
 
 .address {
-    font-size: 180%;
+    font-size: 150%;
     font-weight: bold;
 }
 
@@ -34,19 +37,21 @@ body {
     font-size: 150%;
 }
 
-.addressArrow{
-    margin-bottom: 10px;
+.addressArrow {
+    margin-bottom: 12px;
+    font-size: 18px;
+    margin-right: 6px;
 }
 
-.rideDate{
+.rideDate {
     font-size: 120%;
 }
 
-.wellBox{
+.wellBox {
     box-shadow: 5px 5px 5px #888888;
 }
 
-.redStripeRide{
+.redStripeRide {
     content: '';
     width: 0;
     height: 100%;
@@ -57,8 +62,8 @@ body {
 
 }
 
-.myRidesBorder{
-    border:1px solid #b5b5b5;
+.myRidesBorder {
+    border: 1px solid #b5b5b5;
     background-color: #fbfbfb;
 
 }
@@ -89,34 +94,34 @@ body {
     box-shadow: none;
 }
 
-.myRideButtonActive{
+.myRideButtonActive {
     background-color: #E75044;
     border-color: #7e2817;
 }
 
-.divAddress{
+.divAddress {
     border: 1px solid black;
     width: auto;
     height: 40px;
 }
 
-.panelMargin{
+.panelMargin {
     margin: 20px;
 }
 
-.iconMargin{
+.iconMargin {
     margin: 10px 10px 10px 10px;
 }
 
-.inputAddress{
+.inputAddress {
     font-size: 18px;
     border: 1px;
     width: 80%;
     height: 70%;
 }
 
-.inputAddress:active, .inputAddress:focus{
-    border:0px;
+.inputAddress:active, .inputAddress:focus {
+    border: 0px;
     outline-width: 0;
 }
 
@@ -125,20 +130,20 @@ body {
     box-shadow: none;
 }
 
-.inlineBlock{
+.inlineBlock {
     display: inline-block;
 }
 
 .capacity {
-    width :50px;
+    width: 50px;
     text-align: center;
 }
 
-h4.inline{
+h4.inline {
     display: inline-block;
 }
 
-div.ride{
+div.ride {
 
 }
 
@@ -146,4 +151,80 @@ div.ride{
     height: 1px;
     background-color: #c41515;
     margin: 15px auto;
+}
+
+.greenColor {
+    color: green;
+}
+
+.blueColor {
+    color: blue;
+}
+
+.redColor {
+    color: #c41515;
+}
+
+.capacityOverview {
+    font-size: 150%;
+    font-weight: bold;
+}
+
+.rideOverviewH4 {
+    font-size: 140%;
+}
+
+.profileImageContainer {
+
+    text-align: center;
+    margin-top: 25px;
+
+}
+
+.profileDefault {
+    font-size: 110px;
+    color: #b1acac;
+    border: 1px solid gray;
+}
+
+input.profileDefault {
+    opacity: 0.0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.rideProfileContainer{
+    width: 130px;
+    height: 130px;
+    text-align: center;
+}
+
+.rideProfileImage{
+    width: 120px;
+    height: 120px;
+}
+
+.detailAddressLabel{
+    font-size: 130%;
+}
+
+.inline{
+    display: inline;
+}
+
+.profileImage {
+    width: 120px;
+    height: 120px;
+    border: 1px solid gray;
+}
+
+.cn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
