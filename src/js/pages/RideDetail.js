@@ -1,19 +1,15 @@
 import React from "react";
 import {connect} from "react-redux"
-import {getProfile} from "../redux/UserAction";
 import axios from 'axios'
 import Constants from '../utils/Constants'
-import {setOKMessage} from "../redux/SessionAction";
 import queryString from "query-string";
 import Participant from "../components/Participant";
-import Address from "../components/Address";
 import RideType from "../utils/RideType";
-import Ride from "../components/Ride";
 import {deleteRide, addUserToRide, deleteUserFromRide, loadRide, clearRide} from "../redux/RideAction";
-import DateTimePicker from "../components/DateTimePicker";
 import RideDetailPair from "../components/RideDetailPair";
 import * as RideUtil from "../utils/RideUtil";
 import {Link} from "react-router-dom";
+import {handleError} from "../utils/RideUtil";
 
 class RideDetail extends React.Component {
     constructor() {
@@ -43,8 +39,7 @@ class RideDetail extends React.Component {
                 this.updateState(response.data);
             }.bind(this))
             .catch((error) => {
-                this.props.dispatch({type: 'SET_ERROR', error: "Can't get ride. " + error.status})
-                console.log(error)
+                handleError(this.props.dispatch, "Nelze načíst jízdu", error);
             })
     }
 
@@ -190,12 +185,12 @@ class RideDetail extends React.Component {
                                 <div class="panel-default">
                                     <div class="panel-heading"><h4>Čas výstup a nástupu</h4></div>
                                     <div class="panel-body">
-                                        <RideDetailPair label="Příjezd: " labelClass="detailAddressLabel" iconClass="iconMargin glyphicon glyphicon-time"
+                                        <RideDetailPair label="Odjezd: " labelClass="detailAddressLabel" iconClass="iconMargin glyphicon glyphicon-time"
                                                         valueClass="address" value={RideUtil.formatDate(origin.stopTime)}/>
                                         {this.props.isMiddle ?
                                             <RideDetailPair label="Mezzizastávka: " labelClass="detailAddressLabel" iconClass="iconMargin glyphicon glyphicon-time"
                                                             valueClass="address" value={RideUtil.formatDate(middle.stopTime)}/> : ""}
-                                        <RideDetailPair label="Odjezd: " labelClass="detailAddressLabel" iconClass="iconMargin glyphicon glyphicon-time"
+                                        <RideDetailPair label="Příjezd: " labelClass="detailAddressLabel" iconClass="iconMargin glyphicon glyphicon-time"
                                                         valueClass="address" value={RideUtil.formatDate(destination.stopTime)}/>
                                     </div>
                                 </div>
@@ -230,7 +225,7 @@ class RideDetail extends React.Component {
                                         <RideDetailPair label="Zajížďka: " labelClass="detailAddressLabel" iconClass=""
                                                         valueClass="address" value={ride.detour ? "Ano" : "Ne"}/>
                                         <RideDetailPair label="Cesta zpět: " labelClass="detailAddressLabel" iconClass=""
-                                                        valueClass="address" value={this.props.rideBackId && this.props.rideBackId != ride.id ? <Link to={"/rideDetail?id=" + this.props.rideBackId}>Zpáteční jízda</Link> : "Není zadána."}/>
+                                                        valueClass="address" value={ride.backRide && ride.backRide.id ? <Link to={"/rideDetail?id=" + ride.backRide.id}>Zpáteční jízda</Link> : "Není zadána."}/>
                                     </div>
                                 </div>
                                 <div class="panel-default">
@@ -239,12 +234,17 @@ class RideDetail extends React.Component {
                                         {!this.props.isMiddle ?
                                             <div>
                                                 <h4> Spolucestující </h4>
+                                                <div>
+                                                <Participant key={ride.driver.userId} participant={ride.driver} driver={true}/>
                                                 {participants1}
+                                                </div>
                                             </div> :
                                             <div>
                                                 <h4> Spolucestující vyjíždějíci z {origin.address}</h4>
+                                                <Participant participant={ride.driver} driver={true}/>
                                                 {participants1}
                                                 <h4> Spolucestující vyjíždějíci z {middle.address}</h4>
+                                                <Participant participant={ride.driver} driver={true}/>
                                                 {participants2}
                                             </div>
                                         }
@@ -266,6 +266,5 @@ export default connect(function (store) {
         ride: store.rideReducer.ride,
         type: store.rideReducer.ride_type,
         isMiddle: store.rideReducer.ride_isMiddle,
-        rideBackId: store.rideReducer.rideBackId,
     }
 })(RideDetail)

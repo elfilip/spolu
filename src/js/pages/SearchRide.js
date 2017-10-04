@@ -8,6 +8,7 @@ import {loadUserRides} from "../redux/RideAction";
 import Ride from "../components/Ride";
 import RideType from "../utils/RideType";
 import DateTimePicker from "../components/DateTimePicker";
+import {handleError} from "../utils/RideUtil";
 
 class SearchRide extends React.Component {
     constructor() {
@@ -84,7 +85,7 @@ class SearchRide extends React.Component {
             }.bind(this))
             .catch(function (error) {
                 this.props.dispatch({type: 'SET_ERROR', error: "Can't return results. " + error.status})
-                console.log(error)
+                handleError(this.props.dispatch, "Nelze vyhledat jízdy", error);
                 this.setState({loading: null});
             }.bind(this));
     }

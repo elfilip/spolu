@@ -44,14 +44,14 @@ class ProfileImage extends React.Component {
                     <div class="">
                         <span class="glyphicon glyphicon-user profileDefault"></span>
                     </div>
-                    <input class="profileDefault" type="file" onChange={this.uploadAvatar.bind(this)} onClick={this.clearInputFile.bind(this)}/>
+                    {!this.props.notEditable ? <input class="profileDefault" type="file" onChange={this.uploadAvatar.bind(this)} onClick={this.clearInputFile.bind(this)}/> : ""}
                 </div>
         } else {
             html = <div  class="profileImageContainer">
                 <div class="">
                     <img class='profileImage' src={"data:image/png;base64,"+this.props.avatar}/>
                 </div>
-                <input class="profileDefault" type="file" onChange={this.uploadAvatar.bind(this)} onClick={this.clearInputFile.bind(this)}/>
+                {!this.props.notEditable ? <input class="profileDefault" type="file" onChange={this.uploadAvatar.bind(this)} onClick={this.clearInputFile.bind(this)}/>: ""}
             </div>
         }
 

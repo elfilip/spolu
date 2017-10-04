@@ -6,17 +6,25 @@ import {loginRedirect} from "./SessionAction"
 import Constants from "../utils/Constants";
 
 import { createHashHistory } from 'history';
+import {handleError} from "../utils/RideUtil";
 const history = createHashHistory()
 
-export function loadUserRides(userId) {
+export function loadUserRides() {
     return function (dispatch) {
-        axios.get(Constants.baseURL + '/user/' + userId + '/rides')
+        axios.get(Constants.baseURL + '/user/rides/drives')
             .then(function (response) {
-                dispatch({type: 'RIDES_LOADED', rides: response.data});
+                dispatch({type: 'RIDES_DRIVER_LOADED', rides: response.data});
             })
             .catch(function (error) {
-                dispatch({type: 'SET_ERROR', error: "Nelze načíst jízdy. " + error.status});
-                console.log(error);
+                handleError(dispatch, "Nelze načíst jízdy řidiče", error);
+            })
+        axios.get(Constants.baseURL + '/user/rides/participates')
+            .then(function (response) {
+                dispatch({type: 'RIDES_PARTICIPANT_LOADED', rides: response.data});
+            })
+            .catch(function (error) {
+                handleError(dispatch, "Nelze načíst jízdy účastníka", error);
+
             })
     }
 }
@@ -26,40 +34,18 @@ export function loadRide(userId, rideId) {
         axios.get(Constants.baseURL + '/ride/' + rideId)
             .then(function (response) {
                 dispatch({type: 'RIDE_LOADED', ride: response.data , userId: userId});
-                loadRideBack(dispatch,rideId);
             }.bind(this))
             .catch((error) => {
-                dispatch({type: 'SET_ERROR', error: "Can't get ride. " + error.status})
                 dispatch({type: 'CLEAR_RIDE'})
-                console.log(error)
+                handleError(dispatch, "Nelze načíst jízdu", error);
             })
           }
 }
 
-function loadRideBack(dispatch, rideId){
-    axios.get(Constants.baseURL + '/ride/' + rideId+"/group")
-        .then(function (response) {
-                dispatch({type: 'RIDEBACK_LOADED', rideBackId: response.data.rideBackId ? response.data.rideBackId : null});
-        }.bind(this))
-        .catch((error) => {
-        if(error.status == 400) {
-            dispatch({type: 'RIDEBACK_LOADED', rideBackId: null});
-        }else {
-            dispatch({type: 'SET_ERROR', error: "Can't get ride back. " + error.status})
-            dispatch({type: 'CLEAR_RIDE'})
-            console.log(error)
-        }
-        })
-}
-
-export function addUserToRide(rideId, userId, sectionNo, role) {
+export function addUserToRide(rideId, userId, sectionNo) {
     return function (dispatch) {
         const config = {headers: {'Content-Type': 'application/json'}};
-        var queryParams = "?userId=" + userId + "&role=" + role;
-        if (sectionNo) {
-            queryParams = queryParams + "&sectionNo=" + sectionNo;
-        }
-        axios.post(Constants.baseURL + '/ride/' + rideId + '/participants' + queryParams, null, config)
+        axios.post(Constants.baseURL + '/ride/' + rideId + '/participants', {sectionNo: sectionNo}, config)
             .then(function (response) {
                 dispatch({type: 'SET_OK_MESSAGE', message: 'Jste příhlášen k jízdě.'});
                 dispatch(loadUserRides(userId,rideId));
@@ -67,8 +53,7 @@ export function addUserToRide(rideId, userId, sectionNo, role) {
                 history.push('/myRides');
             })
             .catch(function (error) {
-                dispatch({type: 'SET_ERROR', error: "Nelze vás příhlásit k jízdě.. " + error.status});
-                console.log(error);
+                handleError(dispatch, "Nelze vás příhlásit k jízdě", error);
             })
     }
 }
@@ -83,8 +68,7 @@ export function deleteUserFromRide(rideId, userId) {
                 history.push('/myRides');
             })
             .catch(function (error) {
-                dispatch({type: 'SET_ERROR', error: "Nelze vás odhlásit z jízdy. " + error.status});
-                console.log(error);
+                handleError(dispatch, "Nelze vás odhlásit z jízdy", error);
             })
     }
 }
@@ -98,9 +82,7 @@ export function deleteRide(rideId) {
                 history.push('/myRides');
             })
             .catch(function (error) {
-                dispatch({type: 'SET_ERROR', error: "Nelze smazat jízdu. " + error.status});
-                console.log(error);
-                history.push('/myRides');
+                handleError(dispatch, "Nelze smazat jízdu", error);
             })
     }
 }

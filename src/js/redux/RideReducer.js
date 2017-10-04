@@ -5,15 +5,18 @@ import RideType from '../utils/RideType'
 import {hasUserRoleInRide} from "../utils/RideUtil";
 
 export default function reducer(state = {
-    rides: null,
+    rides_driver: null,
+    rides_participant: null,
     ride: null,
     ride_type: null,
     ride_isMiddle: null,
     rideBackId: null,
 }, action) {
     switch (action.type) {
-        case 'RIDES_LOADED':
-            return {...state, rides: action.rides};
+        case 'RIDES_DRIVER_LOADED':
+            return {...state, rides_driver: action.rides};
+        case 'RIDES_PARTICIPANT_LOADED':
+            return {...state, rides_participant: action.rides};
         case 'RIDE_LOADED':
             return {
                 ride: {...action.ride},
@@ -32,7 +35,7 @@ export default function reducer(state = {
 
 
 function updateState(userId, data) {
-    if (hasUserRoleInRide(userId, data, RideType.DRIVER)) {
+    if (data.driver.userId == userId) {
         return RideType.DRIVER;
     } else if (
         hasUserRoleInRide(userId, data, RideType.SIT)) {

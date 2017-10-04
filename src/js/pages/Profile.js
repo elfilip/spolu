@@ -4,7 +4,7 @@ import axios from 'axios'
 import Constants from '../utils/Constants'
 import {setOKMessage} from "../redux/SessionAction";
 import ProfileImage from "../components/ProfileImage";
-import {resizeBase64Img} from "../utils/RideUtil";
+import {handleError, resizeBase64Img} from "../utils/RideUtil";
 
 class Profile extends React.Component {
     constructor() {
@@ -33,7 +33,7 @@ class Profile extends React.Component {
 
     loadProfile() {
         this.setState({get_profile_status: 'Loading...'})
-        axios.get(Constants.baseURL + '/user/' + this.props.userId)
+        axios.get(Constants.baseURL + '/user')
             .then(function (response) {
                 this.setState({
                     profile: {
@@ -52,21 +52,19 @@ class Profile extends React.Component {
                 })
             }.bind(this))
             .catch((error) => {
-                this.props.dispatch({type: 'SET_ERROR', error: "Can't get user. " + error.status})
-                console.log(error)
+                handleError(this.props.dispatch, "Nelze načíst uživatelský profil", error);
             })
     }
 
     setProfile() {
-        axios.put(Constants.baseURL + '/user/' + this.props.userId, this.state.profile)
+        axios.put(Constants.baseURL + '/user', this.state.profile)
             .then(function (response) {
                 this.setState({get_profile_status: 'Updated'});
                 this.loadProfile();
                 this.props.dispatch(setOKMessage("Profil změněn."))
             }.bind(this))
             .catch(function (error) {
-                this.props.dispatch({type: 'SET_ERROR', error: "Can't update user. " + error.status})
-                console.log(error)
+                handleError(this.props.dispatch, "Nelze změnit profil", error);
             }.bind(this))
     }
 
@@ -86,13 +84,12 @@ class Profile extends React.Component {
 
     changePassword() {
         const config = {headers: {'Content-Type': 'application/json'}};
-        axios.put(Constants.baseURL + '/user/' + this.props.userId + '/password?newPassword=' + this.state.password, null, config)
+        axios.put(Constants.baseURL + '/user/password', {newPassword: this.state.password}, config)
             .then(function (response) {
                 this.props.dispatch(setOKMessage("Heslo změněno."))
             }.bind(this))
             .catch(function (error) {
-                this.props.dispatch({type: 'SET_ERROR', error: "Nelze změnit heslo. " + error.status})
-                console.log(error)
+                handleError(this.props.dispatch, "Nelze změnit heslo", error);
             }.bind(this))
     }
 
@@ -107,16 +104,16 @@ class Profile extends React.Component {
     }
 
     sendProfileToServer(avatar64) {
-        const config = {headers: {'Content-Type': 'text/plain;charset=UTF-8'}};
-        var avatar64noHeader= avatar64.split(",")[1];
-        axios.post(Constants.baseURL + '/user/' + this.props.userId + "/uploadAvatar", avatar64noHeader, config)
+        const config = {headers: {'Content-Type': 'application/json'}};
+        var avatar64noHeader = avatar64.split(",")[1];
+        axios.post(Constants.baseURL + '/user/uploadAvatar', {base64: avatar64noHeader}, config)
             .then(function (response) {
                 var newProfile = this.state.profile;
                 newProfile.avatar = avatar64noHeader;
                 this.setState({profile: newProfile});
             }.bind(this))
             .catch(function (error) {
-                this.props.dispatch({type: 'SET_ERROR', error: "Obrázek se nepodařílo uložit. " + error.status})
+                handleError(this.props.dispatch, "Obrázek se nepodařílo uložit", error);
             }.bind(this))
     }
 
@@ -157,7 +154,7 @@ class Profile extends React.Component {
                                         <label for="comment">Poznámka:</label>
                                         <input type="text" id="comment" class="form-control" name="comment" value={this.state.profile.comment} onChange={this.handleKeydown.bind(this)}/><br/>
                                         <label for="carDescription">Popis auta:</label>
-                                        <input type="text" id="carDescription" class="form-control" name="carDescription" value={this.state.profile.carDescription} onChange={this.handleKeydown.bind(this)}/><br/>
+                                        <textarea rows="3" type="text" id="carDescription" class="form-control" name="carDescription" value={this.state.profile.carDescription} onChange={this.handleKeydown.bind(this)}/><br/>
                                         <button type="button" class="btn btn-default" onClick={this.submit.bind(this)}>Změnit</button>
                                         <br/>
                                     </div>

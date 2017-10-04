@@ -1,7 +1,7 @@
 export function hasUserRoleInRide(userId, ride, userRole) {
     for (var i in ride.rideSections) {
         for (var j in ride.rideSections[i].participants) {
-            if (userId == ride.rideSections[i].participants[j].userId && ride.rideSections[i].participants[j].role == userRole) {
+            if (userId == ride.rideSections[i].participants[j].userId) {
                 return true;
             }
         }
@@ -96,4 +96,23 @@ export function trimName(name, maxChars) {
         return name.substring(0, maxChars - 1) + " ...";
     }
     return name;
+}
+
+export function handleError(dispatch, message, error){
+    dispatch({type: 'SET_ERROR', error: message +": "  + error.status, error_code: error.status})
+    console.error(error);
+}
+
+export function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+
+export function isValidationError(error_messages){
+    for(var i in error_messages){
+        if(error_messages[i]){
+            return true;
+        }
+    }
+    return false;
 }

@@ -17,6 +17,7 @@ import MyRides from "./MyRides";
 import RideDetail from "./RideDetail";
 import SearchRide from "./SearchRide";
 import FilipRoute from "./FilipRoute";
+import ProfileRead from "./ProfileRead";
 
 
 class Base extends React.Component {
@@ -33,6 +34,9 @@ class Base extends React.Component {
         }
     };
 
+    handleCloseLogout = () => {
+        this.props.dispatch({type: 'LOGOUT'})    };
+
     componentWillUnmount() {
         console.log("unmounting")
         this.props.dispatch(clear());
@@ -46,9 +50,17 @@ class Base extends React.Component {
                 onClick={this.handleClose}
             />,
         ];
+        const redirectAction = [
+            <FlatButton
+                label="OK"
+                primary={true}
+                onClick={this.handleCloseLogout}
+            />,
+        ];
         var menu = this.props.authenticated ? <Nav/> : "";
         var logout = this.props.authenticated ? <Logout/> : "";
         console.log("base render " + this.props.authenticated)
+
         return (
             <div>
                 <div>
@@ -66,14 +78,24 @@ class Base extends React.Component {
                                   component={RideDetail}></PrivateRoute>
                     <PrivateRoute path="/searchRide" authenticated={this.props.authenticated}
                                   component={SearchRide}></PrivateRoute>
+                    <PrivateRoute path="/userProfile" authenticated={this.props.authenticated}
+                                  component={ProfileRead}></PrivateRoute>
 
                     <Dialog
-                        title="Alert"
+                        title="Chyba"
                         actions={actions}
                         modal={true}
-                        open={this.props.error !== null}
+                        open={this.props.error !== null && this.props.error_code != 403}
                     >
                         {this.props.error}
+                    </Dialog>
+                    <Dialog
+                        title="Nepříhlášen"
+                        actions={redirectAction}
+                        modal={true}
+                        open={this.props.error !== null && this.props.error_code == 403 }
+                    >
+                        Nejste příhlášen. Klikněte na OK pro přesměrování na přihlášení.
                     </Dialog>
                     <Dialog
                         title="OK"
@@ -97,6 +119,8 @@ export default withRouter(connect(function (store) {
         redirect: store.sessionReducer.redirect,
         error: store.sessionReducer.error,
         ok_message: store.sessionReducer.ok_message,
+        error_code: store.sessionReducer.error_code,
+
     }
 })(Base))
 

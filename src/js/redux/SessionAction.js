@@ -4,6 +4,7 @@
 import axios from 'axios';
 import Constants from "../utils/Constants";
 import { createHashHistory } from 'history';
+import {handleError} from "../utils/RideUtil";
 
 const history = createHashHistory()
 
@@ -23,10 +24,10 @@ export function logout() {
                 dispatch({type: 'LOGOUT'})
                 history.push('/login')
                 localStorage.clear();
-
             })
             .catch(function (error) {
-                console.log("Nepovedlo se prihlasit");
+                console.error("Nepovedlo se odlhásit");
+                console.error(error);
                 dispatch({type: 'LOGOUT'})
             })
     }
@@ -43,14 +44,31 @@ export function loginRequest(username, password) {
                 password: password,
             }, config)
             .then(function (response) {
-                dispatch(login(username, response.data.userId));
-                history.push('/main')
+                loadCurrentProfileAndLogin(dispatch);
             })
             .catch(function (error) {
-                dispatch({type: 'SET_LOGIN_ERROR', error: "Nepovedlo se přihlásit. Kód: " + error.status})
+                dispatch({type: 'SET_LOGIN_ERROR', error: "Špatné jméno nebo heslo."})
+                console.log(error);
             })
         return {type: 'xxxx'}
     }
+}
+
+export function clearLoginMessage(){
+    return function (dispatch){
+        dispatch({type: 'CLEAR_LOGIN_MESSAGE'});
+    }
+}
+
+function loadCurrentProfileAndLogin(dispatch){
+    axios.get(Constants.baseURL + '/user')
+        .then(function (response) {
+            dispatch(login(response.data.email, response.data.id));
+            history.push('/main')
+        })
+        .catch(function (error) {
+            handleError(dispatch, "Nepovedlo se přihlásit. Nepovedlo se načíst uživatele", error);
+        })
 }
 
 export function setOKMessage(message){

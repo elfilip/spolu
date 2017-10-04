@@ -1,9 +1,10 @@
 import React from "react";
 import {NavLink,} from "react-router-dom";
 
-import {loginRequest} from "../redux/SessionAction";
+import {clearLoginMessage, loginRequest} from "../redux/SessionAction";
 import {connect} from "react-redux"
 import { createHashHistory } from 'history';
+import {validateEmail} from "../utils/RideUtil";
 const history = createHashHistory()
 
 class Login extends React.Component {
@@ -12,6 +13,7 @@ class Login extends React.Component {
         this.state = {
             username: null,
             password: null,
+            validation_message: null,
         };
     }
 
@@ -24,7 +26,28 @@ class Login extends React.Component {
     }
 
     handleLogin() {
-        this.props.dispatch(loginRequest(this.state.username, this.state.password));
+        this.props.dispatch(clearLoginMessage());
+        if(this.validateInputs()) {
+            this.setState({validation_message: null})
+            this.props.dispatch(loginRequest(this.state.username, this.state.password));
+        }
+    }
+
+    validateInputs(){
+        var message = "";
+        if(!this.state.username || !this.state.password){
+            message = "Musíte zadat email a heslo."
+        }else {
+            if(!validateEmail(this.state.username)){
+                message=message + "Email má špatný formát."
+            }
+        }
+        if(message) {
+            this.setState({validation_message : message})
+            return false;
+        }
+        return true;
+
     }
 
     redirect() {
@@ -39,8 +62,8 @@ class Login extends React.Component {
 
         }
         var html = null;
-        var loginStyle = {textAlign: 'center', margin: '0px auto'};
-        var registerStyle={float: 'right'};
+        var loginStyle = {textAlign: 'center', margin: '0px auto', paddingBottom: '25px'};
+        var registerStyle={float: 'right', marginBottom: '15px'};
         var submitStyle={width: '50%'};
         var rowStyle={	margin: '100px auto'}
 
@@ -50,7 +73,7 @@ class Login extends React.Component {
                     <div class="row margin100">
 
                         <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
-                            <h3>Aplikace Spolujízda</h3>
+                            <h3 style={{color: 'white'}} >Aplikace Spolujízda</h3>
                             <div class="redStripe">
 
                             </div>
@@ -61,6 +84,12 @@ class Login extends React.Component {
                                 {this.props.error ?
                                     <div class="alert alert-danger">
                                         {this.props.error}
+                                    </div>
+                                    : ""
+                                }
+                                {this.state.validation_message ?
+                                    <div class="alert alert-danger">
+                                        {this.state.validation_message}
                                     </div>
                                     : ""
                                 }

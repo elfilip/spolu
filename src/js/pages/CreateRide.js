@@ -9,6 +9,7 @@ import {loadUserRides} from "../redux/RideAction";
 import DateTimePicker from "../components/DateTimePicker";
 import moment from "moment"
 import cs from "moment/locale/cs"
+import {handleError} from "../utils/RideUtil";
 class CreateRide extends React.Component {
     constructor() {
         super();
@@ -112,8 +113,7 @@ class CreateRide extends React.Component {
                 this.props.dispatch(setOKMessage("Jízda vytvořena."))
             }.bind(this))
             .catch(function (error) {
-                this.props.dispatch({type: 'SET_ERROR', error: "Nelze vytvořit jízdu. " + error.status})
-                console.log(error)
+                handleError(this.props.dispatch, "Nelze vytvořit jízdu", error);
             }.bind(this))
 
 
@@ -144,7 +144,7 @@ class CreateRide extends React.Component {
                                 <div class="panel-heading"><h4>Čas výstup a nástupu</h4></div>
                                 <div class="panel-body">
                                     <div>
-                                        <h4 class="inline">Čas příjezdu</h4>
+                                        <h4 class="inline">Čas odjezdu</h4>
                                         <DateTimePicker name="originStopTime" update={this.updateTime.bind(this)} classCss="floatRightCreateRide"/>
                                     </div>
                                     {this.state.isMiddle ?
@@ -154,7 +154,7 @@ class CreateRide extends React.Component {
                                         </div>
                                         : ""}
                                     <div>
-                                        <h4 class="inline">Čas odjezdu</h4>
+                                        <h4 class="inline">Čas příjezdu</h4>
                                         <DateTimePicker name="destinationStopTime" update={this.updateTime.bind(this)} classCss="floatRightCreateRide"/>
                                     </div>
                                 </div>
@@ -219,7 +219,7 @@ class CreateRide extends React.Component {
                                     <div class="panel-heading"><h4>Zpáteční cesta</h4></div>
                                     <div class="panel-body">
                                         <div>
-                                            <h4 class="inline">Čas příjezdu</h4>
+                                            <h4 class="inline">Čas odjezdu</h4>
                                             <DateTimePicker name="originStopTimeBack" update={this.updateTime.bind(this)}/>
                                         </div>
                                         {this.state.isMiddle ?
@@ -229,7 +229,7 @@ class CreateRide extends React.Component {
                                             </div>
                                             : ""}
                                         <div>
-                                            <h4 class="inline">Čas odjezdu</h4>
+                                            <h4 class="inline">Čas příjezdu</h4>
                                             <DateTimePicker name="destinationStopTimeBack" update={this.updateTime.bind(this)}/>
                                         </div>
                                     </div>

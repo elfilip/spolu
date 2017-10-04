@@ -81,7 +81,7 @@ class Ride extends React.Component {
 
             <div class="ride">
                 <div class="col-sm-3 col-md-2 col-lg-2" style={{textAlign:'center'}}>
-                   <RideProfileImage profile={this.findDriver(ride)}/>
+                   <RideProfileImage profile={ride.driver}/>
                 </div>
                 <div class="col-sm-9 col-md-9 col-lg-9">
                     <div class="redStripeRide"/>
