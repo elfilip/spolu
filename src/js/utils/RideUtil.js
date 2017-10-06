@@ -70,7 +70,7 @@ export function resizeBase64Img2(base64, width, height) {
 }
 
 export function computePrice(ride) {
-    var isMiddle=ride.rideSections.length == 2;
+    var isMiddle = ride.rideSections.length == 2;
     if (isMiddle) {
         return ride.rideSections[1].price + ride.rideSections[0].price;
     } else {
@@ -78,10 +78,10 @@ export function computePrice(ride) {
     }
 }
 
-export function findDriver(ride){
-    for(var i in ride.rideSections){
-        for(var j in ride.rideSections[i].participants){
-            if(ride.rideSections[i].participants[j].role == 'DRIVER'){
+export function findDriver(ride) {
+    for (var i in ride.rideSections) {
+        for (var j in ride.rideSections[i].participants) {
+            if (ride.rideSections[i].participants[j].role == 'DRIVER') {
                 return ride.rideSections[i].participants[j];
             }
         }
@@ -98,9 +98,13 @@ export function trimName(name, maxChars) {
     return name;
 }
 
-export function handleError(dispatch, message, error){
-    dispatch({type: 'SET_ERROR', error: message +": "  + error.status, error_code: error.status})
-    console.error(error);
+export function handleError(dispatch, message, error) {
+    dispatch({type: 'SET_ERROR', error: message + ": " + error.status, error_code: error.status})
+    if(error == null) {
+        console.error(error);
+    }else{
+        console.error("Handle error: Error je null");
+    }
 }
 
 export function validateEmail(email) {
@@ -108,11 +112,39 @@ export function validateEmail(email) {
     return re.test(email);
 }
 
-export function isValidationError(error_messages){
-    for(var i in error_messages){
-        if(error_messages[i]){
+export function isValidationError(error_messages) {
+    for (var i in error_messages) {
+        if (error_messages[i]) {
             return true;
         }
     }
     return false;
+}
+
+export function validate(conditions, value) {
+    if(!conditions){
+        return null;
+    }
+    if (conditions.nonEmpty && !value) {
+        return "Toto pole je povinné"
+    }
+    if (conditions.onlyNumbers && isNaN(value)) {
+        return "Musí být zadáno číslo"
+    }
+    if (conditions.minLength > value.length) {
+        return "Minimální počet znaků je " + conditions.minLength;
+    }
+    if (conditions.maxLength < value.length) {
+        return "Maximální počet znaků je " + conditions.maxLength;
+    }
+    if (conditions.minValue > value) {
+        return "Minimální hodnota je " + conditions.minValue;
+    }
+    if (conditions.maxValue < value) {
+        return "Maximální hodnota je " + conditions.maxValue;
+    }
+    if (conditions.regex && !conditions.regex.test(value)) {
+        return "Špatný formát"
+    }
+    return null;
 }
